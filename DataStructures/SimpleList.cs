@@ -261,7 +261,6 @@ namespace DataStructures
 			public ISimpleList<T> Append(T element) => Make(concatToThis, list => list.Push(element));
 			public ISimpleList<T> Reverse() => Make(ReverseImpl, concatToThis);
 			public ISimpleList<T> Concat(in ISimpleList<T> list) => Make(concatToThis, ((HughesList)list).concatToThis);  
-			
 			public override string ToString() => ToSimple().ToString();
 			
 			public IEnumerator<T> GetEnumerator() => ToSimple().GetEnumerator();
@@ -271,42 +270,24 @@ namespace DataStructures
 			private ISimpleList<T> ToSimple() => concatToThis(SimpleListEmpty);
 			private static ISimpleList<T> ReverseImpl(ISimpleList<T> list) => FromSimple(list.Reverse());
 			private static HughesList Make(Func<ISimpleList<T>, ISimpleList<T>> f) => new(f);
+			
 			private static HughesList Make(
 				Func<ISimpleList<T>, ISimpleList<T>> f1,
 				Func<ISimpleList<T>, ISimpleList<T>> f2) =>
 				new(a => f1(f2(a)));
 
-			public bool Equals(HughesList other)
-			{
-				return SimpleListExtensions.Equals(this, other);
-			}
-
-			public override bool Equals(object obj)
-			{
-				return obj is HughesList other && Equals(other);
-			}
-
-			public override int GetHashCode()
-			{
-				throw new NotSupportedException();
-			}
-
-			public static bool operator ==(HughesList left, HughesList right)
-			{
-				return left.Equals(right);
-			}
-
-			public static bool operator !=(HughesList left, HughesList right)
-			{
-				return !left.Equals(right);
-			}
+			public bool Equals(HughesList other) => SimpleListExtensions.Equals(this, other);
+			public override bool Equals(object obj) => obj is HughesList other && Equals(other);
+			public override int GetHashCode() => throw new NotSupportedException();
+			public static bool operator ==(HughesList left, HughesList right) => left.Equals(right);
+			public static bool operator !=(HughesList left, HughesList right) => !left.Equals(right);
 		}
 		
 		private class SimpleListWithCheapCount : ISimpleList<T>
 		{
-			public int Count { get; }
-			
 			private readonly ISimpleList<T> list;
+			
+			public int Count { get; }
 
 			private SimpleListWithCheapCount(ISimpleList<T> list, int count)
 			{
@@ -319,11 +300,7 @@ namespace DataStructures
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 			public bool IsEmpty => list.IsEmpty;
 			public T Peek => list.Peek;
-		
-			public ISimpleList<T> Pop(out T head)
-			{
-				return new SimpleListWithCheapCount(list.Pop(out head), Count - 1);
-			}
+			public ISimpleList<T> Pop(out T head) => new SimpleListWithCheapCount(list.Pop(out head), Count - 1);
 
 			public ISimpleList<T> Concat(in ISimpleList<T> other)
 			{
