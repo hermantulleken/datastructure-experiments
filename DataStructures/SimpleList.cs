@@ -127,7 +127,7 @@ namespace DataStructures
 			public override ISimpleList<T> Pop(out T _) => throw new InvalidOperationException(CannotPerformOperationOnEmpty);
 			public override ISimpleList<T> Concat(in ISimpleList<T> other) => other;
 			public override string ToUnbracketedString() => "";
-			
+
 			public override IEnumerator<T> GetEnumerator()
 			{
 				yield break;

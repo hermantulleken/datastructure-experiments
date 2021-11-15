@@ -5,4 +5,13 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+      <PackageReference Include="System.Drawing.Common" Version="6.0.0-rc.2.21480.5" />
+    </ItemGroup>
+
 </Project>

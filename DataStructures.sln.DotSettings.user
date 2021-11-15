@@ -2,5 +2,19 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac6c1590_002D3f0a_002D4816_002Db9ee_002D95300a5737ef/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.SimpleListTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestTuple&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.EnumerableExtensionsTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.MultiRadixTuples&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestThrowIfZeroRadix1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestThrowIfZeroRadix2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.BinaryTreeTests.AddContainsInvariant&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwap&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwapObject&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwapAt&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwapInt&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort.TestIsSortedOnSortedList&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort.TestIsSortedOnUnsortedList&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Steque/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
