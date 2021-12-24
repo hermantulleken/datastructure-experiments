@@ -47,7 +47,7 @@ namespace Tests
 		[Test]
 		public void TestThrowIfZeroRadix1()
 		{
-			var input = new [] {0};
+			int[] input = {0};
 			void Test() => Combinatorial.MultiRadixTuples(input);
 			
 			Assert.That(Test, Throws.TypeOf<ArgumentOutOfRangeException>());

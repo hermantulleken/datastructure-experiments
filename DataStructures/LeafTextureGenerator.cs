@@ -69,6 +69,7 @@ namespace DataStructures
 		
 		private static int ToByte(float value) => MyMath.RoundToInt(MyMath.Clamp(255 * value, 0, 255));
 	}
+	
 	public static class MyMath
 	{
 		public static int FloorToInt(float x) => (int)MathF.Floor(x);
@@ -194,21 +195,22 @@ namespace DataStructures
 		}
 	}
 	
-	public interface IPixelGrid 
+	public interface IPixelGrid : IGrid<ColorF>
 	{
-		int Width { get; }
-		int Height { get; }
-		Int2 Size { get; }
 		Int2 Anchor { get; }
 		Int2 Abyss { get; }
-		
-		ColorF this[Int2 point] { get; set; }
 		Bitmap ToBitmap();
 	}
 
 	public class PixelGrid : IPixelGrid
 	{
 		private readonly ColorF[,] pixels;
+
+		public IEnumerable<Int2> Indices { get; }
+		public IGrid<T2> CloneStructure<T2>()
+		{
+			throw new NotImplementedException();
+		}
 
 		public int Width => Size.X;
 		public int Height => Size.Y;
@@ -271,6 +273,8 @@ namespace DataStructures
 	{
 		private readonly IPixelGrid baseGrid;
 		private readonly Int2 offset;
+
+		public IEnumerable<Int2> Indices { get; }
 		
 		public int Width => baseGrid.Width;
 		public int Height => baseGrid.Height;
@@ -342,6 +346,50 @@ namespace DataStructures
 	{
 		public static void Paint(this CenteredGrid grid, Func<Int2, int> classifier, IList<ColorF> colors)
 			=> grid.Paint(p => colors[classifier(p)]);
+
+		public static IGrid<T1> CloneStructure<T, T1>(this IGrid<T> grid, T1 initialElement = default)
+			=> new Grid<T1>(grid.Size, initialElement);
+		
+		public static void Fill<T>(this IGrid<T> grid, T initialElement = default)
+		{
+			foreach (var index in grid.Indices)
+			{
+				grid[index] = initialElement;
+			}
+		}
+		
+		public static void Fill<T>(this IGrid<T> grid, Func<Int2, T> filler)
+		{
+			foreach (var index in grid.Indices)
+			{
+				grid[index] = filler(index);
+			}
+		}
+
+		public static IGrid<T1> CloneStructure<T, T1>(this IGrid<T> grid, Func<Int2, T1> filler)
+			=> new Grid<T1>(grid.Size, filler);
+
+		public static IGrid<T1> Apply<T, T1>(IGrid<T> grid, Func<T, T1> apply)
+		{
+			var newGrid = grid.CloneStructure<T, T1>();
+			foreach (var index in grid.Indices)
+			{
+				newGrid[index] = apply(grid[index]);
+			}
+
+			return newGrid;
+		}
+		
+		public static IGrid<T1> Apply<T, T1>(IGrid<T> grid, Func<T, Int2, T1> apply)
+		{
+			var newGrid = grid.CloneStructure<T, T1>();
+			foreach (var index in grid.Indices)
+			{
+				newGrid[index] = apply(grid[index], index);
+			}
+
+			return newGrid;
+		}
 	}
 
 	public class VeinClassifier
@@ -356,10 +404,93 @@ namespace DataStructures
 			
 			if(IsMainVein(point)) return true;
 
-			if (IsSecondaryVein(point)) return true;
+			if(IsSecondaryVein(point)) return true;
 
 			return false;
 
+		}
+	}
+
+	public interface IGrid<T>
+	{
+		public T this[Int2 index] { get; set; }
+		public IEnumerable<Int2> Indices { get; }
+		
+		int Width { get; }
+		int Height { get; }
+		Int2 Size { get; }
+	}
+
+	public class Grid
+	{
+		public static IEnumerable<Int2> Rect(Int2 anchor, Int2 size)
+		{
+			int x0 = anchor.X;
+			int y0 = anchor.Y;
+			int x1 = anchor.X + size.X;
+			int y1 = anchor.Y + size.Y;
+			
+			for (int j = y0; j < y1; j++)
+			{
+				for (int i = x0; i < x1; i++)
+				{
+					yield return new Int2(i, j);
+				}
+			}
+		}
+
+		public static IEnumerable<Int2> Row(int x0, int length)
+			=> Rect(new Int2(x0, 0), new Int2(length, 0));
+	}
+
+	public class Grid<T> : IGrid<T>
+	{
+		private readonly T[,] data;
+
+		public T this[Int2 index]
+		{
+			get => data[index.X, index.Y];
+			set => data[index.X, index.Y] = value;
+		}
+
+		public IEnumerable<Int2> Indices
+		{
+			get
+			{
+				for (int j = 0; j < Height; j++)
+				{
+					for (int i = 0; i < Width; i++)
+					{
+						yield return new Int2(i, j);
+					}
+				}
+			}
+		}
+
+		public int Width => Size.X;
+		public int Height => Size.Y;
+		public Int2 Size { get; }
+
+		public Grid(Int2 size, T initialElement = default)
+		{
+			Size = size;
+			data = new T[Width, Height];
+
+			foreach (var index in this.Indices)
+			{
+				this[index] = initialElement;
+			}
+		}
+		
+		public Grid(Int2 size, Func<Int2, T> filler)
+		{
+			Size = size;
+			data = new T[Width, Height];
+
+			foreach (var index in this.Indices)
+			{
+				this[index] = filler(index);
+			}
 		}
 	}
 }
