@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using Gamelogic.Extensions;
 using Gamelogic.Extensions.Algorithms;
@@ -11,7 +12,7 @@ namespace DataStructures
 	{
 		public static void Main(string[] _)
 		{
-			TestImage();
+			TestInker();
 
 			//TimeAlgorithms2();
 
@@ -21,6 +22,16 @@ namespace DataStructures
 			//CombinatorialTest();
 			//BasicTest();
 			//ProfileStringBuilding();
+		}
+
+		private static void TestInker()
+		{
+			var image = new Bitmap("image.jpeg");
+			var grid = image.ToGrid();
+			var inkedGrid = Inker.Ink(grid, 11);
+			var inkedImage = inkedGrid.ToBitmap();
+			inkedImage.Save("inkedImage.png");
+
 		}
 
 		public static void TestImage()

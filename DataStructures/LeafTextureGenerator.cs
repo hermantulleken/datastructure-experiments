@@ -10,8 +10,8 @@ namespace DataStructures
 {
 	public struct Int2
 	{
-		public int X;
-		public int Y;
+		public readonly int X;
+		public readonly int Y;
 
 		public static readonly Int2 Zero = new(0, 0);
 		public static readonly Int2 One = new(1, 1);
@@ -68,6 +68,12 @@ namespace DataStructures
 		public override string ToString() => $"[{R}, {G}, {B}, ({A})]";
 		
 		private static int ToByte(float value) => MyMath.RoundToInt(MyMath.Clamp(255 * value, 0, 255));
+	}
+
+	public static class ColoExtensions
+	{
+		public static ColorF ToColorF(this Color color)
+			=> ColorF.FromArgb(color.A / 255.0f, color.R / 255.0f, color.G / 255.0f, color.B / 255.0f);
 	}
 	
 	public static class MyMath
@@ -207,10 +213,6 @@ namespace DataStructures
 		private readonly ColorF[,] pixels;
 
 		public IEnumerable<Int2> Indices { get; }
-		public IGrid<T2> CloneStructure<T2>()
-		{
-			throw new NotImplementedException();
-		}
 
 		public int Width => Size.X;
 		public int Height => Size.Y;
@@ -347,9 +349,6 @@ namespace DataStructures
 		public static void Paint(this CenteredGrid grid, Func<Int2, int> classifier, IList<ColorF> colors)
 			=> grid.Paint(p => colors[classifier(p)]);
 
-		public static IGrid<T1> CloneStructure<T, T1>(this IGrid<T> grid, T1 initialElement = default)
-			=> new Grid<T1>(grid.Size, initialElement);
-		
 		public static void Fill<T>(this IGrid<T> grid, T initialElement = default)
 		{
 			foreach (var index in grid.Indices)
@@ -366,12 +365,21 @@ namespace DataStructures
 			}
 		}
 
-		public static IGrid<T1> CloneStructure<T, T1>(this IGrid<T> grid, Func<Int2, T1> filler)
-			=> new Grid<T1>(grid.Size, filler);
+		public static IGrid<T> CloneStructure<T>(this IGrid<T> grid, T initialElement = default)
+			=> new Grid<T>(grid.Size, initialElement);
+		
+		public static IGrid<T> CloneStructure<T>(this IGrid<T> grid, Func<Int2, T> filler)
+			=> new Grid<T>(grid.Size, filler);
+		
+		public static IGrid<T> CloneStructure<T>(this IGrid grid, T initialElement = default)
+			=> new Grid<T>(grid.Size, initialElement);
+		
+		public static IGrid<T> CloneStructure<T>(this IGrid grid, Func<Int2, T> filler)
+			=> new Grid<T>(grid.Size, filler);
 
-		public static IGrid<T1> Apply<T, T1>(IGrid<T> grid, Func<T, T1> apply)
+		public static IGrid<T1> Apply<T, T1>(this IGrid<T> grid, Func<T, T1> apply)
 		{
-			var newGrid = grid.CloneStructure<T, T1>();
+			var newGrid = grid.CloneStructure<T1>();
 			foreach (var index in grid.Indices)
 			{
 				newGrid[index] = apply(grid[index]);
@@ -382,13 +390,31 @@ namespace DataStructures
 		
 		public static IGrid<T1> Apply<T, T1>(IGrid<T> grid, Func<T, Int2, T1> apply)
 		{
-			var newGrid = grid.CloneStructure<T, T1>();
+			var newGrid = grid.CloneStructure<T1>();
 			foreach (var index in grid.Indices)
 			{
 				newGrid[index] = apply(grid[index], index);
 			}
 
 			return newGrid;
+		}
+
+		public static IGrid<ColorF> ToGrid(this Bitmap bitmap)
+			=> new Grid<ColorF>(
+				new Int2(bitmap.Width, bitmap.Height), 
+				index => bitmap.GetPixel(index.X, index.Y).ToColorF());
+
+		public static Bitmap ToBitmap(this IGrid<ColorF> grid)
+		{
+
+			var bitmap = new Bitmap(grid.Width, grid.Height, PixelFormat.Format32bppArgb);
+
+			foreach (var index in grid.Indices)
+			{
+				bitmap.SetPixel(index.X, index.Y, grid[index].ToColor());
+			}
+
+			return bitmap;
 		}
 	}
 
@@ -411,14 +437,19 @@ namespace DataStructures
 		}
 	}
 
-	public interface IGrid<T>
+	public interface IGrid
 	{
-		public T this[Int2 index] { get; set; }
 		public IEnumerable<Int2> Indices { get; }
 		
 		int Width { get; }
 		int Height { get; }
 		Int2 Size { get; }
+	}
+
+	public interface IGrid<T> : IGrid
+	{
+		public T this[Int2 index] { get; set; }
+		
 	}
 
 	public class Grid
@@ -439,8 +470,8 @@ namespace DataStructures
 			}
 		}
 
-		public static IEnumerable<Int2> Row(int x0, int length)
-			=> Rect(new Int2(x0, 0), new Int2(length, 0));
+		public static IEnumerable<Int2> Row(Int2 start, int length)
+			=> Rect(start, new Int2(length, 1));
 	}
 
 	public class Grid<T> : IGrid<T>
