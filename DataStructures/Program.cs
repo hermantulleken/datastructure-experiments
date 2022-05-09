@@ -36,7 +36,7 @@ namespace DataStructures
 
 		public static void TestImage()
 		{
-			int InCircle(Int2 p, int radius) 
+			int InCircle(Int2 p, int radius)
 				=> p.X * p.X + p.Y * p.Y < radius*radius ? 1 : 0;
 
 			ColorF Fill(Int2 p) => ColorF.Blue;
@@ -44,7 +44,7 @@ namespace DataStructures
 			ColorF HalfPlane(Int2 p) => p.X >= 0 ? ColorF.Blue : ColorF.Green;
 
 			VeinClassifier vein = new VeinClassifier();
-			
+
 			var colors = new ColorF[]
 			{
 				ColorF.Red, ColorF.Blue,
@@ -54,25 +54,25 @@ namespace DataStructures
 			var size = new Int2(width, width);
 			var pixels = new CenteredGrid(size, ColorF.Red);
 			pixels.Paint(p => vein.IsVein(p) ? 1 : 0, colors);
-			
+
 			//Console.WriteLine(pixels.ToString());
-			
+
 			var image = new IdealImage(pixels);
 			var raster = image.Rasterize();
-			
+
 			//Console.WriteLine(raster.ToString());
-			
+
 			var bitmap = raster.ToBitmap();
-			
+
 			bitmap.Save("Red.png");
 		}
-		
+
 		private static void TimeAlgorithms2()
 		{
 			const int range = 1000;
 			const int experimentCount = 1000;
 			const int count = 100000;
-			
+
 			var algorithms = new Action<IList<int>, PerformanceMonitor, PerformanceData>[]
 			{
 				//Sort.SelectionSort,
@@ -103,7 +103,7 @@ namespace DataStructures
 				//nameof(Sort.MergeSort_Recursive_NewList_Smart),
 			};
 
-			
+
 			var countLabels = new [] { "Big" };
 			var tickCountLabels = new [] { "Small", "Big" };
 			var data = new  Dictionary<string, PerformanceData[]>();
@@ -111,7 +111,7 @@ namespace DataStructures
 			foreach (string name in names)
 			{
 				var dataItem = new PerformanceData[experimentCount];
-				
+
 				for (int i = 0; i < experimentCount; i++)
 				{
 					dataItem[i] = new PerformanceData(countLabels, tickCountLabels);
@@ -121,14 +121,14 @@ namespace DataStructures
 			}
 
 			var monitor = new PerformanceMonitor(tickCountLabels);
-	
+
 			long[][] times = new long[algorithms.Length][];
 
 			for (int i = 0; i < algorithms.Length; i++)
 			{
 				times[i] = new long[experimentCount];
 			}
-				
+
 			for (int i = 0; i < experimentCount; i++)
 			{
 				var list = RandomList.New(range).Take(count);
@@ -153,7 +153,7 @@ namespace DataStructures
 			const int experimentCount = 100;
 			const int interval = 10000;
 			const int intervalCount = 5;
-			
+
 			var algorithms = new Action<IList<int>>[]
 			{
 				Sort.SelectionSort,
@@ -183,18 +183,18 @@ namespace DataStructures
 				nameof(Sort.MergeSort_Recursive_NewList),
 				nameof(Sort.MergeSort_Recursive_NewList_Smart),
 			};
-			
+
 			Console.Write("n");
 			Console.Write("\t");
-			
+
 			for (int i = 0; i < algorithms.Length; i++)
 			{
 				Console.Write(names[i]);
 				Console.Write("\t");
 			}
-			
+
 			Console.WriteLine();
-			
+
 			for (int k = 1; k <= intervalCount; k++)
 			{
 				int count = interval * k;
@@ -204,7 +204,7 @@ namespace DataStructures
 				{
 					times[i] = new long[experimentCount];
 				}
-				
+
 				for (int i = 0; i < experimentCount; i++)
 				{
 					var list = RandomList.New(range).Take(count);
@@ -216,7 +216,7 @@ namespace DataStructures
 						times[j][i] = Measure(() => algorithms[j1](copy));
 					}
 				}
-				
+
 				Console.Write(count);
 				Console.Write("\t");
 
@@ -225,7 +225,7 @@ namespace DataStructures
 					Console.Write(times[j].Average());
 					Console.Write("\t");
 				}
-				
+
 				Console.WriteLine();
 			}
 		}
@@ -246,7 +246,7 @@ namespace DataStructures
 			{
 				0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 			};
-			
+
 			Console.WriteLine(bag.ToPrettyString());
 			Console.WriteLine(bag.ToPrettyString());
 			Console.WriteLine(bag.ToPrettyString());
@@ -255,10 +255,10 @@ namespace DataStructures
 		private static void TestMerge()
 		{
 			int[] list = {
-				0, 6, 3, 6, 
+				0, 6, 3, 6,
 				1, 8, 3, 2
 			};
-			
+
 			Sort.MergeSort_Iterative_InPlace(list);
 			Console.WriteLine(list.ToPrettyString());
 		}
@@ -272,28 +272,28 @@ namespace DataStructures
 			{
 				list = list.Push(i);
 			}
-			
+
 			var watch = Stopwatch.StartNew();
 			var str = list.ToUnbracketedString();
-			
+
 			watch.Stop();
-			
+
 			Console.WriteLine(watch.ElapsedMilliseconds);
 			Console.WriteLine(str);
 		}
-		
+
 		private static void BasicTest()
 		{
 			var list1 = SimpleList<int>.SimpleListEmpty.Push(1, 2, 3);
 			var list2 = SimpleList<int>.SimpleListEmpty.Push(4, 5, 6);
 			var list3 = list2.Concat(list1);
-			
+
 			var list4 = SimpleList<int>.SimpleListEmpty.Append(1, 2, 3);
-			
+
 			var list5 = SimpleList<int>.HughesListEmpty.Push(1, 2, 3);
 			var list6 = SimpleList<int>.HughesListEmpty.Push(4, 5, 6);
 			var list7 = list6.Concat(list5);
-			var list8 = list7.Reverse(); 
+			var list8 = list7.Reverse();
 
 			Console.WriteLine(list1);
 			Console.WriteLine(list2);
@@ -309,7 +309,7 @@ namespace DataStructures
 		{
 			var radixes1 = new int[] {2, 3};
 			var radixes2 = new int[] {0};
-			
+
 			var tuples1 = Combinatorial.MultiRadixTuples(radixes1);
 			var tuples2 = Combinatorial.MultiRadixTuples(radixes2);
 
@@ -317,7 +317,7 @@ namespace DataStructures
 			{
 				tuples1, tuples2
 			};
-			
+
 			Console.WriteLine(tuples.ToPrettyString());
 		}
 
@@ -327,11 +327,11 @@ namespace DataStructures
 			{
 				[3] = "three",
 				[5] = "five",
-				[1] = "one", 
+				[1] = "one",
 				[2] = "two",
 				[7] = "seven"
 			};
-			
+
 			Console.WriteLine(tree.ToPrettyString());
 			Console.WriteLine(tree.ToRepresentation());
 			Console.WriteLine(tree.Count);

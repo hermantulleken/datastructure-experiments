@@ -15,6 +15,12 @@
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort.TestIsSortedOnSortedList&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort.TestIsSortedOnUnsortedList&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestIndexesInRange&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestIndexesInSequence&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringLeaf&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringInternal&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringLevels&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestReconnect&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Steque/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
