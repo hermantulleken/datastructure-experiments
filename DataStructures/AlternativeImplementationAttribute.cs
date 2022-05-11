@@ -2,6 +2,14 @@
 
 namespace DataStructures
 {
+	public enum  ExposedFor
+	{
+		Performance,
+		PerformanceMonitoring,
+		Testing,
+		Debugging
+	}
+	
 	/// <summary>
 	/// Marks an alternative implementation of a method that is not used.
 	/// </summary>
@@ -18,5 +26,16 @@ namespace DataStructures
 		/// </summary>
 		public string Comment { get; set; }
 		
+	}
+
+	[AttributeUsage(AttributeTargets.All)]
+	public class PrivateAttribute : Attribute
+	{
+		public ExposedFor Reason { get; }
+
+		public PrivateAttribute(ExposedFor reason)
+		{
+			Reason = reason;
+		}
 	}
 }

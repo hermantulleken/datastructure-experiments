@@ -5,13 +5,51 @@ using System.Linq;
 
 namespace DataStructures;
 
+public interface IQuadtree<T>
+{
+	/// <summary>
+	/// The width of the grid this quadtree represents. 
+	/// </summary>
+	public int Width { get; }
+	
+	/// <summary>
+	/// The height of the grid this quadtree represents.
+	/// </summary>
+	public int Height { get; }
+	
+	public IEnumerable<(int x, int y)> Indexes { get; }
+	
+	/// <summary>
+	/// Gets and sets the value of the quadtree at the given indexes.
+	/// </summary>
+	/// <param name="x">The horizontal index.</param>
+	/// <param name="y">The vertical index.</param>
+	/// <exception cref="ArgumentOutOfRangeException">when either index is negative or greater than or equals to <see cref="Width"/> and <see cref="Height"/>
+	/// respectively.</exception>
+	public T this[int x, int y] { get; set; }
+	
+	/// <summary>
+	/// Gets and sets the value of the quadtree at the given indexes (combined in a tuple).
+	/// </summary>
+	/// <param name="index">A tuple that contains the x and y index to get or set the value at.</param>
+	/// <exception cref="ArgumentOutOfRangeException">when either index is negative or greater than or equals to <see cref="Width"/> and <see cref="Height"/>
+	/// respectively.</exception>
+	public T this[(int x, int y) index] { get; set; }
+	
+	/// <summary>
+	/// Sets all the elements in this quadtree to the same value. 
+	/// </summary>
+	/// <param name="initialElement">The value to set the quadtree to. If not given then <see langword="default"/> is used.</param>
+	public void Clear(T initialElement = default);
+}
+
 public static class Quadtree
 {
 	/// <summary>
 	/// Returns whether the given number is a power of 2. 
 	/// </summary>
 	/// <remarks>Zero (0) is not a power of two, one (1) is.</remarks>
-	public static bool IsPot(int n) => n > 0 && (n == 1 || IsPot(n >> 1));
+	public static bool IsPot(int n) => n > 0 && (n == 1 || (n % 2 == 0 && IsPot(n >> 1)));
 	
 	/// <summary>
 	/// Checks whether the given number is equal to or greater than the given minimum, and smaller than the maximum. 
@@ -25,6 +63,11 @@ public static class Quadtree
 	public static int NextPot(int n) => 
 		n < 1 ? 1 :
 		IsPot(n) ? n : 1 << (Log2_Unchecked(n) + 1);
+
+	public static int NextMultiple(int n, int factor)
+		=> (n % factor == 0) ? factor :
+			n > 0 ? (n / factor + 1) * factor :
+			(n / factor) * factor; // ((-5 / 3) * 3) -> -1 * 3 -> -3  
 
 	public static int Log2_Unchecked(int n)
 	{
@@ -44,17 +87,13 @@ public static class Quadtree
 /// A 2D data structure that supports random access through indices suitable for representing data where large blocks of cells could gave the same values.
 /// </summary>
 /// <typeparam name="T">The type of data this tree holds.</typeparam>
-/// <remarks>This base supports a variety of quad trees used for implementation; the one to use is <see cref="Quadtree"/>.</remarks>
-public abstract class QuadtreeBase<T>
+/// <remarks>This base supports a variety of quadtrees used for implementation; the one to use is <see cref="Quadtree"/>.</remarks>
+public abstract class QuadtreeBase<T> : IQuadtree<T>
 {
-	/// <summary>
-	/// The width of the grid this quadtree represents. 
-	/// </summary>
+	/// <inheritdoc />
 	public abstract int Width { get; }
 	
-	/// <summary>
-	/// The height of the grid this quadtree represents.
-	/// </summary>
+	/// <inheritdoc />
 	public abstract int Height { get; }
 
 	/// <summary>
@@ -62,22 +101,28 @@ public abstract class QuadtreeBase<T>
 	/// </summary>
 	public int Count => Width * Height;
 	
-	/// <summary>
-	/// Gets and sets the value of the quadtree at the given indexes.
-	/// </summary>
-	/// <param name="x">The horizontal index.</param>
-	/// <param name="y">The vertical index.</param>
-	/// <exception cref="ArgumentOutOfRangeException">when either index is negative or greater than or equals to <see cref="Width"/> and <see cref="Height"/>
-	/// respectively.</exception>
+	public IEnumerable<(int x, int y)> Indexes
+	{
+		get
+		{
+			for (int y = 0; y < Height; y++)
+			{
+				for (int x = 0; x < Width; x++)
+				{
+					yield return (x, y);
+				}
+			}
+		}
+	}
+	
+	/// <inheritdoc />
 	public abstract T this[int x, int y] { get; set; }
 	
-	/// <summary>
-	/// Gets and sets the value of the quadtree at the given indexes (combined in a tuple).
-	/// </summary>
-	/// <param name="index">A tuple that contains the x and y index to get or set the value at.</param>
-	/// <exception cref="ArgumentOutOfRangeException">when either index is negative or greater than or equals to <see cref="Width"/> and <see cref="Height"/>
-	/// respectively.</exception>
+	/// <inheritdoc />
 	public abstract T this[(int x, int y) index] { get; set; }
+
+	/// <inheritdoc />
+	public abstract void Clear(T initialElement = default);
 	
 	/// <summary>
 	/// Checks whether the given indices are within the range of this quadtree. 
@@ -88,14 +133,7 @@ public abstract class QuadtreeBase<T>
 		if (!Quadtree.IndexInRange(x, 0, Width)) throw new ArgumentOutOfRangeException(nameof(x));
 		if (!Quadtree.IndexInRange(y, 0, Height)) throw new ArgumentOutOfRangeException(nameof(y));
 	}
-
-	/// <summary>
-	/// Sets all the elements in this quadtree to the same value. 
-	/// </summary>
-	/// <param name="initialElement">The value to set the quadtree to. If not given then <see langword="default"/> is used.</param>
-	public abstract void Clear(T initialElement = default);
 }
-
 
 /// <remarks>
 ///	<para>The tree is a square, and the size (width and height) must be a power of two. For a quadtree that supports all sizes see <see cref="Quadtree"/>.</para>
@@ -263,15 +301,15 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 
 		public bool ShouldBeLeaf(int x, int y, T value)
 		{
-			bool AreOtherChildrenLeavesEqualToValue(Quad quad)
+			bool SiblingsAreLeavesEqualToValue(Quad quad)
 			{
 				for (int i = 0; i < QuadCount; i++)
 				{
-					var child = children[i];
+					var sibling = children[i];
 
-					if (child == quad) continue; //Only process other children
+					if (sibling == quad) continue; //Original quad is not a sibling
 
-					var node = child.Node;
+					var node = sibling.Node;
 					
 					switch (node)
 					{
@@ -279,13 +317,11 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 							break;
 
 						case Leaf:
-							return false;
-
 						case InternalNode:
 							return false;
 
 						default:
-							throw Exceptions.TypeCaseNotImplemented(child.Node, nameof(node));
+							throw Exceptions.TypeCaseNotImplemented(sibling.Node, nameof(node));
 					}
 				}
 
@@ -294,7 +330,7 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 
 			(var affectedChild, int newX, int newY) = GetChild(x, y);
 			
-			if (!AreOtherChildrenLeavesEqualToValue(affectedChild)) return false;
+			if (!SiblingsAreLeavesEqualToValue(affectedChild)) return false;
 			
 			var node = affectedChild.Node;
 
@@ -339,8 +375,7 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 		
 		quad = new Quad(size, initialElement);
 	}
-
-	/// <inheritdoc />
+	
 	public override T this[int x, int y]
 	{
 		get
@@ -356,30 +391,15 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 		}
 	}
 	
-	/// <inheritdoc />
 	public override T this[(int x, int y) index]
 	{
 		get => this[index.x, index.y];
 		set => this[index.x, index.y] = value;
 	}
 
-	/// <inheritdoc />
-	
 	public override void Clear(T initialElement = default) => quad.Clear(initialElement);
 
-	public IEnumerable<(int x, int y)> Indexes
-	{
-		get
-		{
-			for (int y = 0; y < Size; y++)
-			{
-				for (int x = 0; x < Size; x++)
-				{
-					yield return (x, y);
-				}
-			}
-		}
-	}
+	
 
 	public string ToStructureString() => quad.Node.ToStructureString();
 }
@@ -390,19 +410,19 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 	{
 		protected readonly int TreeSize;
 		
-		private readonly SquarePotQuadtree<T>[] trees;
+		private readonly IQuadtree<T>[] trees;
 
-		protected TreeList(int treeCount, int treeSize, T initialElement = default)
+		protected TreeList(Func<int, T, IQuadtree<T>> quadtreeFactory, int treeCount, int treeSize, T initialElement = default)
 		{
 			Debug.Assert(treeCount >= 1);
 			Debug.Assert(Quadtree.IsPot(treeSize));
 			
 			TreeSize = treeSize;
-			trees = new SquarePotQuadtree<T>[treeCount];
+			trees = new IQuadtree<T>[treeCount];
 
 			for (int i = 0; i < treeCount; i++)
 			{
-				trees[i] = new SquarePotQuadtree<T>(treeSize, initialElement);
+				trees[i] = quadtreeFactory(treeSize, initialElement);
 			}
 		}
 		
@@ -440,13 +460,13 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 		protected abstract (int treeIndex, int x, int y) GetIndexes(int x, int y);
 	}
 
-	private sealed class HorizontalQuadTree : TreeList
+	private sealed class HorizontalQuadtree : TreeList
 	{
 		public override int Width { get; }
 		public override int Height { get; }
 
-		public HorizontalQuadTree(int width, int height, T initialElement = default)
-			: base(width / height, height, initialElement)
+		public HorizontalQuadtree(Func<int, T, IQuadtree<T>> quadtreeFactory, int width, int height, T initialElement = default)
+			: base(quadtreeFactory, width / height, height, initialElement)
 		{
 			Debug.Assert(Quadtree.IsPot(width));
 			Debug.Assert(Quadtree.IsPot(height));
@@ -467,13 +487,13 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 		}
 	}
 
-	private sealed class VerticalQuadTree : TreeList
+	private sealed class VerticalQuadtree : TreeList
 	{
 		public override int Width { get; }
 		public override int Height { get; }
 		
-		public VerticalQuadTree(int width, int height, T initialElement = default)
-			: base(height / width, height, initialElement)
+		public VerticalQuadtree(Func<int, T, IQuadtree<T>> quadtreeFactory, int width, int height, T initialElement = default)
+			: base(quadtreeFactory, height / width, height, initialElement)
 		{
 			Debug.Assert(Quadtree.IsPot(width));
 			Debug.Assert(Quadtree.IsPot(height));
@@ -502,7 +522,21 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 	/// <inheritdoc/>
 	public override int Width { get; }
 
-	public Quadtree(int width, int height, T initialElement = default)
+	/// <summary>
+	/// Constructs a new quadtree of arbitrary width and height using <see cref="SquarePotQuadtree{T}"/> us the underlying quadtree.
+	/// </summary>
+	public Quadtree(int width, int height, T initialElement = default) :
+		this((size, element) => new SquarePotQuadtree<T>(size, element), width, height, initialElement)
+	{ }
+
+	/// <summary>
+	/// Constructs a new quadtree of arbitrary width and height.
+	/// </summary>
+	/// <param name="quadtreeFactory">A factory method that produces square power-of-two quadtrees.</param>
+	/// <param name="width">The width of the quadtree.</param>
+	/// <param name="height">The height of the quadtree.</param>
+	/// <param name="initialElement">The initial element of the quadtree (the value of all cells). If not given <see langword="default"/> is used.</param>
+	public Quadtree(Func<int, T, IQuadtree<T>> quadtreeFactory, int width, int height, T initialElement = default)
 	{
 		Width = width;
 		Height = height;
@@ -512,11 +546,11 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 
 		if (newWidth >= newHeight)
 		{
-			trees = new HorizontalQuadTree(width, height, initialElement);
+			trees = new HorizontalQuadtree(quadtreeFactory, width, height, initialElement);
 		}
 		else
 		{
-			trees = new VerticalQuadTree(width, height, initialElement);
+			trees = new VerticalQuadtree(quadtreeFactory, width, height, initialElement);
 		}
 	}
 

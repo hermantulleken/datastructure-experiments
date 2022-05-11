@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 
 namespace DataStructures
 {
-
 	public sealed class BinarySearchTree<T> : IDictionary<int, T>
 	{
 		private enum Direction

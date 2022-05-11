@@ -10,9 +10,48 @@ namespace DataStructures
 {
 	public static class Program
 	{
+		public static void TestOctree()
+		{
+			var rand = new Random();
+			const int maxSize = 129;
+			
+			(int x, int y, int z) Rand() => (rand.Next(maxSize), rand.Next(maxSize), rand.Next(maxSize)) ;
+
+			float GetNodeCount((int, int, int) size, Octree<int>.GridStrategy strategy)
+			{
+				(int width, int height, int depth) = size;
+				var tree = new Octree<int>(width, height, depth, strategy:strategy);
+				int value = 0;
+
+				foreach (var index in tree.Indexes)
+				{
+					tree[index] = value;
+					value++;
+				}
+
+				return tree.NodeCount / ((float) width * height * depth);
+			}
+
+			float sum = 0;
+
+			int repeatCount = 10;
+			
+			for (int i = 0; i < repeatCount; i++)
+			{
+				var size = Rand();
+				float nodeCount = GetNodeCount(size, Octree<int>.GridStrategy.MaxCellSize) 
+				                - GetNodeCount(size, Octree<int>.GridStrategy.MinCellSize);
+				Console.WriteLine(nodeCount);
+				sum += nodeCount;
+			}
+
+			Console.WriteLine(sum/repeatCount);
+		}
+		
 		public static void Main(string[] _)
 		{
-			TestInker();
+			TestOctree();
+			//TestInker();
 
 			//TimeAlgorithms2();
 
