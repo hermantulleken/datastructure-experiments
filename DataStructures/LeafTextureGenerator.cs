@@ -34,6 +34,10 @@ namespace DataStructures
 		public static implicit operator Vector2(Int2 point) => new(point.X, point.Y);
 
 		public override string ToString() => $"[{X}, {Y}]";
+		
+		public static implicit operator Int2((int x, int y) point) => new (point.x, point.y);
+		public static implicit operator (int x, int y)(Int2 point) => new (point.X, point.Y);
+
 	}
 
 	public readonly struct ColorF
@@ -225,6 +229,12 @@ namespace DataStructures
 			get => pixels[point.X, point.Y];
 			set => pixels[point.X, point.Y] = value;
 		}
+		
+		public ColorF this[int x, int y]
+		{
+			get => pixels[x, y];
+			set => pixels[x, y] = value;
+		}
 
 		public PixelGrid(Int2 size, ColorF defaultColor)
 		{
@@ -289,6 +299,12 @@ namespace DataStructures
 		{
 			get => baseGrid[point + offset];
 			set => baseGrid[point + offset] = value;
+		}
+		
+		public ColorF this[int x, int y]
+		{
+			get => baseGrid[x, y];
+			set => baseGrid[x, y] = value;
 		}
 		
 		public CenteredGrid(Int2 size, ColorF defaultColor)
@@ -449,6 +465,7 @@ namespace DataStructures
 	public interface IGrid<T> : IGrid
 	{
 		public T this[Int2 index] { get; set; }
+		public T this[int x, int y] { get; set; }
 		
 	}
 
@@ -482,6 +499,12 @@ namespace DataStructures
 		{
 			get => data[index.X, index.Y];
 			set => data[index.X, index.Y] = value;
+		}
+		
+		public T this[int x, int y]
+		{
+			get => data[x, y];
+			set => data[x, y] = value;
 		}
 
 		public IEnumerable<Int2> Indices

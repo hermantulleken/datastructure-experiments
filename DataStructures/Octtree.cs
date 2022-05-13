@@ -89,7 +89,7 @@ public static class Octree
 }
 
 /// <summary>
-/// A 2D data structure that supports random access through indices suitable for representing data where large blocks of cells could gave the same values.
+/// A 3D data structure that supports random access through indices suitable for representing data where large blocks of cells could gave the same values.
 /// </summary>
 /// <typeparam name="T">The type of data this tree holds.</typeparam>
 /// <remarks>This base supports a variety of octrees used for implementation; the one to use is <see cref="Octree"/>.</remarks>

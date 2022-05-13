@@ -8,6 +8,8 @@ using JetBrains.Annotations;
 
 namespace DataStructures
 {
+	// This tree does not support elements with the same key, and since it
+	// it requires integer keys, it is not general purpose. 
 	public sealed class BinarySearchTree<T> : IDictionary<int, T>
 	{
 		private enum Direction
