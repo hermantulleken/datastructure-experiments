@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
-using System.Xml.Xsl;
 using Gamelogic.Extensions;
 using JetBrains.Annotations;
 
@@ -11,52 +9,137 @@ namespace DataStructures;
 
 public static class MergeSort
 {
+	public class UnsafeQueue<T>
+	{
+		private readonly IList<T> elements;
+		private int start;
+		private int end;
 
+		public UnsafeQueue(IList<T> elements, int start, int end)
+		{
+			this.elements = elements ?? throw new ArgumentNullException(nameof(elements));
+
+			if (end < 0 || end < start || end > elements.Count) throw new ArgumentException(null, nameof(end));
+			if (start < 0 || start >= elements.Count) throw new ArgumentException(null, nameof(start));
+			
+			this.start = start;
+			this.end = end;
+		}
+
+		public bool Empty() => start == end;
+		
+		public T Peek()
+		{
+			Debug.Assert(!Empty());
+			return elements[start];
+		}
+
+		public T Pop()
+		{
+			Debug.Assert(!Empty());
+			return elements[start++];
+		}
+
+		public void Push(T item)
+		{
+			Debug.Assert(end < elements.Count);
+			elements[end++] = item;
+		}
+	}
+	
 	public static bool IsSorted(IList<IComparable> list, int start, int end)
 	{
+		list.ThrowIfNull(nameof(list));
+		if (start >= list.Count) throw new ArgumentOutOfRangeException(nameof(start));
+		if (end > list.Count) throw new ArgumentOutOfRangeException(nameof(end));
+		if (end <= start) throw new ArgumentOutOfRangeException(nameof(end));
+
+		int length = end - start;
+
+		if (length <= 1)
+		{
+			return true;
+		}
+		
+		//We have at least two elements
+		for (int i = start + 1; i < end; i++)
+		{
+			//Negative indexes are impossible
+			Debug.Assert(i - 1 >= 0);
+			
+			var item0 = list[i - 1];
+			var item1 = list[i];
+			
+			if(item0.CompareTo(item1) > 0)
+			{
+				return false;
+			}
+			
+			//All items up to i are sorted
+		}
+		
+		//All items up to the last index are sorted
 		return true;
 	}
 	
 	public static IComparable Max(IList<IComparable> list, int start, int end)
 	{
-		return list.First();
+		list.ThrowIfNull(nameof(list));
+		if (start >= list.Count) throw new ArgumentOutOfRangeException(nameof(start));
+		if (end > list.Count) throw new ArgumentOutOfRangeException(nameof(end));
+		if (end <= start) throw new ArgumentOutOfRangeException(nameof(end));
+
+		int length = end - start;
+
+		if (length == 0) throw new ArgumentException(null, nameof(list));
+
+		if (length == 1)
+		{
+			return true;
+		}
+
+		var biggest = list[start];
+
+		for (int i = start + 1; i < end; i++)
+		{
+			if (list[i].CompareTo(biggest) > 0)
+			{
+				biggest = list[i];
+			}
+			//biggest is larger than all elements from start to i
+		}
+		//biggest is larger than all elements from start to end - 1
+
+		return biggest;
 	}
 	
 	public static void Merge<T>(IList<IComparable> list, int leftStart, int rightStart, int rightEnd)
 	{
 		var copy = list.ToList();
-		int leftFrontIndex = leftStart;
-		int rightFrontIndex = rightStart;
+		var left = new UnsafeQueue<IComparable>(copy, leftStart, rightStart);
+		var right = new UnsafeQueue<IComparable>(copy, rightStart, rightEnd);
+		var destination = new UnsafeQueue<IComparable>(list, leftStart, rightEnd);
 
-		// Merge copy[leftStart..rightStart] with copy[rightStart..rightEnd] back into list[leftStart..rightEnd].
+		// Merge left and right into destination.
 
-		IComparable PopFromLeft() => copy[leftFrontIndex++];
-		IComparable PopFromRight() => copy[rightFrontIndex++];
-		bool IsLeftListEmpty() => leftFrontIndex == rightStart;
-		bool IsRightIsEmpty() => rightFrontIndex == rightEnd;
-		bool IsLeftFrontSmaller() => copy[leftFrontIndex].CompareTo(copy[rightFrontIndex]) < 0;
-		bool IsRightFrontSmallerOrEqual() => copy[rightFrontIndex].CompareTo(copy[leftFrontIndex]) <= 0;
-		
 		for (int destinationFrontIndex = leftStart; destinationFrontIndex <= rightEnd; destinationFrontIndex++)
 		{
-			void PushToDestination(IComparable item) => list[destinationFrontIndex] = item;
-			
-			if (IsLeftListEmpty())
+			if (left.Empty())
 			{
-				PushToDestination(PopFromRight());
+				destination.Push(right.Pop());
 			}
-			else if (IsRightIsEmpty())
+			else if (right.Empty())
 			{
-				PushToDestination(PopFromLeft());
+				destination.Push(left.Pop());
 			}
-			else if (IsLeftFrontSmaller())
+			else if (left.Peek().CompareTo(right.Peek()) < 0)
 			{
-				PushToDestination(PopFromRight());
+				destination.Push(right.Pop());
 			}
 			else 
 			{
-				Debug.Assert(IsRightFrontSmallerOrEqual());
-				PushToDestination(PopFromLeft());
+				Debug.Assert(right.Peek().CompareTo(left.Peek()) <= 0);
+				destination.Push(left.Pop());
 			}
 			
 			#if DEBUG
@@ -65,16 +148,16 @@ public static class MergeSort
 				Debug.Assert(IsSorted(list, leftStart, destinationFrontIndex));
 			
 				var biggestElement = Max(list, leftStart, destinationFrontIndex);
-				bool BiggestSmallerThanElementAt(int index) => biggestElement.CompareTo(copy[index]) <= 0;
+				bool BiggestSmallerThan(IComparable other) => biggestElement.CompareTo(other) <= 0;
 
-				if(!IsLeftListEmpty())
+				if(!left.Empty())
 				{
-					Debug.Assert(BiggestSmallerThanElementAt(leftFrontIndex));
+					Debug.Assert(BiggestSmallerThan(left.Peek()));
 				}
 
-				if (!IsRightIsEmpty())
+				if (!right.Empty())
 				{
-					Debug.Assert(BiggestSmallerThanElementAt(rightFrontIndex));
+					Debug.Assert(BiggestSmallerThan(right.Peek()));
 				}
 			}
 			
