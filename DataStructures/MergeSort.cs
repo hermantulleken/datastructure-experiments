@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml.Xsl;
 using Gamelogic.Extensions;
 using JetBrains.Annotations;
