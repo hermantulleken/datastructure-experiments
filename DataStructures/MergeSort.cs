@@ -9,37 +9,42 @@ namespace DataStructures;
 
 public static class MergeSort
 {
-	public static void Merge<T>(IList<IComparable> list, int start, int middle, int high)
+	public static void Merge<T>(IList<IComparable> list, int leftStart, int leftEnd, int rightEnd)
 	{
 		bool Less(IComparable x, IComparable y) => x.CompareTo(y) < 0;
+		bool LessOrEqual(IComparable x, IComparable y) => x.CompareTo(y) <= 0;
 
-		var helpList = new List<IComparable>(list.Count);
+		IComparable TakeNextFrom(IList<IComparable> source, ref int index) => source[index++];
 		
-		// Merge list[start..middle] with list[middle+1..high].
-		int i = start, j = middle+1;
+		var copy = list.ToList();
 		
-		for (int k = start; k <= high; k++) // Copy list[start..high] to helpList[start..high].
+		// Merge list[leftStart..leftEnd] with list[leftEnd+1..rightEnd].
+		int leftIndex = leftStart;
+		int rightIndex = leftEnd + 1; //right start
+		
+		bool LeftListEmpty() => leftIndex > leftEnd;
+		bool RightIsEmpty() => rightIndex > rightEnd;
+		bool RightSmaller() => Less(copy[rightIndex], copy[leftIndex]);
+		bool LeftSmallerOrEqual() => LessOrEqual(copy[leftIndex], copy[rightIndex]);
+
+		for (int destinationIndex = leftStart; destinationIndex <= rightEnd; destinationIndex++) // Merge back to list[leftStart..rightEnd].
 		{
-			helpList[k] = list[k];
-		}
-		
-		for (int k = start; k <= high; k++) // Merge back to list[start..high].
-		{
-			if (i > middle)
+			if (LeftListEmpty())
 			{
-				list[k] = helpList[j++];
+				list[destinationIndex] = TakeNextFrom(copy, ref rightIndex);
 			}
-			else if (j > high)
+			else if (RightIsEmpty())
 			{
-				list[k] = helpList[i++];
+				list[destinationIndex] =  TakeNextFrom(copy, ref leftIndex);
 			}
-			else if (Less(helpList[j], helpList[i]))
+			else if (RightSmaller())
 			{
-				list[k] = helpList[j++];
+				list[destinationIndex] = TakeNextFrom(copy, ref rightIndex);
 			}
-			else
+			else 
 			{
-				list[k] = helpList[i++];
+				Debug.Assert(LeftSmallerOrEqual());
+				list[destinationIndex] = TakeNextFrom(copy, ref leftIndex);
 			}
 		}
 	}
