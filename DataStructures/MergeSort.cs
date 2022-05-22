@@ -9,21 +9,39 @@ namespace DataStructures;
 
 public static class MergeSort
 {
-	public static void merge<T>(IComparable[] a, int lo, int mid, int hi)
+	public static void Merge<T>(IList<IComparable> list, int start, int middle, int high)
 	{
-		bool less(IComparable x, IComparable y) => x.CompareTo(y) < 0;
+		bool Less(IComparable x, IComparable y) => x.CompareTo(y) < 0;
+
+		var helpList = new List<IComparable>(list.Count);
 		
-		var aux = new IComparable[a.Length];
+		// Merge list[start..middle] with list[middle+1..high].
+		int i = start, j = middle+1;
 		
-		// Merge a[lo..mid] with a[mid+1..hi].
-		int i = lo, j = mid+1;
-		for (int k = lo; k <= hi; k++) // Copy a[lo..hi] to aux[lo..hi].
-			aux[k] = a[k];
-		for (int k = lo; k <= hi; k++) // Merge back to a[lo..hi].
-			if (i > mid) a[k] = aux[j++];
-			else if (j > hi ) a[k] = aux[i++];
-			else if (less(aux[j], aux[i])) a[k] = aux[j++];
-			else a[k] = aux[i++];
+		for (int k = start; k <= high; k++) // Copy list[start..high] to helpList[start..high].
+		{
+			helpList[k] = list[k];
+		}
+		
+		for (int k = start; k <= high; k++) // Merge back to list[start..high].
+		{
+			if (i > middle)
+			{
+				list[k] = helpList[j++];
+			}
+			else if (j > high)
+			{
+				list[k] = helpList[i++];
+			}
+			else if (Less(helpList[j], helpList[i]))
+			{
+				list[k] = helpList[j++];
+			}
+			else
+			{
+				list[k] = helpList[i++];
+			}
+		}
 	}
 	
 	/// <summary>
