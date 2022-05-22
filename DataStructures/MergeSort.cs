@@ -28,16 +28,14 @@ public static class MergeSort
 		int leftFrontIndex = leftStart;
 		int rightFrontIndex = rightStart;
 
-		// Merge copy[leftStart..rightStart] with copy[rightStart+1..rightEnd] back into list[leftStart..rightEnd].
-		
-		bool IsCopyLessAt(int index1, int index2) => copy[index1].CompareTo(copy[index2]) < 0;
-		bool IsCopyLessOrEqualAt(int index1, int index2) => copy[index1].CompareTo(copy[index2]) <= 0;
+		// Merge copy[leftStart..rightStart] with copy[rightStart..rightEnd] back into list[leftStart..rightEnd].
+
 		IComparable PopFromLeft() => copy[leftFrontIndex++];
 		IComparable PopFromRight() => copy[rightFrontIndex++];
 		bool IsLeftListEmpty() => leftFrontIndex == rightStart;
 		bool IsRightIsEmpty() => rightFrontIndex == rightEnd;
-		bool IsLeftFrontSmaller() => IsCopyLessAt(leftFrontIndex, rightFrontIndex);
-		bool IsRightFrontSmallerOrEqual() => IsCopyLessOrEqualAt(rightFrontIndex, leftFrontIndex);
+		bool IsLeftFrontSmaller() => copy[leftFrontIndex].CompareTo(copy[rightFrontIndex]) < 0;
+		bool IsRightFrontSmallerOrEqual() => copy[rightFrontIndex].CompareTo(copy[leftFrontIndex]) <= 0;
 		
 		for (int destinationFrontIndex = leftStart; destinationFrontIndex <= rightEnd; destinationFrontIndex++)
 		{
