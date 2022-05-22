@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Xml.Xsl;
 using Gamelogic.Extensions;
 using JetBrains.Annotations;
 
@@ -7,8 +9,13 @@ namespace DataStructures;
 
 public static class MergeSort
 {
-	public static void merge(Comparable[] a, int lo, int mid, int hi)
-	{ // Merge a[lo..mid] with a[mid+1..hi].
+	public static void merge<T>(IComparable[] a, int lo, int mid, int hi)
+	{
+		bool less(IComparable x, IComparable y) => x.CompareTo(y) < 0;
+		
+		var aux = new IComparable[a.Length];
+		
+		// Merge a[lo..mid] with a[mid+1..hi].
 		int i = lo, j = mid+1;
 		for (int k = lo; k <= hi; k++) // Copy a[lo..hi] to aux[lo..hi].
 			aux[k] = a[k];
