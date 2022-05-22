@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Xsl;
@@ -10,43 +11,77 @@ namespace DataStructures;
 
 public static class MergeSort
 {
-	public static void Merge<T>(IList<IComparable> list, int leftStart, int leftEnd, int rightEnd)
+
+	public static bool IsSorted(IList<IComparable> list, int start, int end)
 	{
-		bool Less(IComparable x, IComparable y) => x.CompareTo(y) < 0;
-		bool LessOrEqual(IComparable x, IComparable y) => x.CompareTo(y) <= 0;
-
-		IComparable TakeNextFrom(IList<IComparable> source, ref int index) => source[index++];
-		
+		return true;
+	}
+	
+	public static IComparable Max(IList<IComparable> list, int start, int end)
+	{
+		return list.First();
+	}
+	
+	public static void Merge<T>(IList<IComparable> list, int leftStart, int rightStart, int rightEnd)
+	{
 		var copy = list.ToList();
-		
-		// Merge list[leftStart..leftEnd] with list[leftEnd+1..rightEnd].
-		int leftIndex = leftStart;
-		int rightIndex = leftEnd + 1; //right start
-		
-		bool LeftListEmpty() => leftIndex > leftEnd;
-		bool RightIsEmpty() => rightIndex > rightEnd;
-		bool RightSmaller() => Less(copy[rightIndex], copy[leftIndex]);
-		bool LeftSmallerOrEqual() => LessOrEqual(copy[leftIndex], copy[rightIndex]);
+		int leftFrontIndex = leftStart;
+		int rightFrontIndex = rightStart;
 
-		for (int destinationIndex = leftStart; destinationIndex <= rightEnd; destinationIndex++) // Merge back to list[leftStart..rightEnd].
+		// Merge copy[leftStart..rightStart] with copy[rightStart+1..rightEnd] back into list[leftStart..rightEnd].
+		
+		bool IsCopyLessAt(int index1, int index2) => copy[index1].CompareTo(copy[index2]) < 0;
+		bool IsCopyLessOrEqualAt(int index1, int index2) => copy[index1].CompareTo(copy[index2]) <= 0;
+		IComparable PopFromLeft() => copy[leftFrontIndex++];
+		IComparable PopFromRight() => copy[rightFrontIndex++];
+		bool IsLeftListEmpty() => leftFrontIndex == rightStart;
+		bool IsRightIsEmpty() => rightFrontIndex == rightEnd;
+		bool IsLeftFrontSmaller() => IsCopyLessAt(leftFrontIndex, rightFrontIndex);
+		bool IsRightFrontSmallerOrEqual() => IsCopyLessOrEqualAt(rightFrontIndex, leftFrontIndex);
+		
+		for (int destinationFrontIndex = leftStart; destinationFrontIndex <= rightEnd; destinationFrontIndex++)
 		{
-			if (LeftListEmpty())
+			void PushToDestination(IComparable item) => list[destinationFrontIndex] = item;
+			
+			if (IsLeftListEmpty())
 			{
-				list[destinationIndex] = TakeNextFrom(copy, ref rightIndex);
+				PushToDestination(PopFromRight());
 			}
-			else if (RightIsEmpty())
+			else if (IsRightIsEmpty())
 			{
-				list[destinationIndex] =  TakeNextFrom(copy, ref leftIndex);
+				PushToDestination(PopFromLeft());
 			}
-			else if (RightSmaller())
+			else if (IsLeftFrontSmaller())
 			{
-				list[destinationIndex] = TakeNextFrom(copy, ref rightIndex);
+				PushToDestination(PopFromRight());
 			}
 			else 
 			{
-				Debug.Assert(LeftSmallerOrEqual());
-				list[destinationIndex] = TakeNextFrom(copy, ref leftIndex);
+				Debug.Assert(IsRightFrontSmallerOrEqual());
+				PushToDestination(PopFromLeft());
 			}
+			
+			#if DEBUG
+			void AssertLoopInvariants()
+			{
+				Debug.Assert(IsSorted(list, leftStart, destinationFrontIndex));
+			
+				var biggestElement = Max(list, leftStart, destinationFrontIndex);
+				bool BiggestSmallerThanElementAt(int index) => biggestElement.CompareTo(copy[index]) <= 0;
+
+				if(!IsLeftListEmpty())
+				{
+					Debug.Assert(BiggestSmallerThanElementAt(leftFrontIndex));
+				}
+
+				if (!IsRightIsEmpty())
+				{
+					Debug.Assert(BiggestSmallerThanElementAt(rightFrontIndex));
+				}
+			}
+			
+			AssertLoopInvariants();
+			#endif
 		}
 	}
 	
