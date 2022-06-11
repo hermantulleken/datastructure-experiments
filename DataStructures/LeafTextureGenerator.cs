@@ -38,6 +38,13 @@ namespace DataStructures
 		public static implicit operator Int2((int x, int y) point) => new (point.x, point.y);
 		public static implicit operator (int x, int y)(Int2 point) => new (point.X, point.Y);
 
+		public Int2 Rotate90() => new Int2(-Y, X);
+		public Int2 Rotate180() => new Int2(-X, -Y);
+		public Int2 Rotate270() => new Int2(Y, -X);
+		public Int2 ReflectX() => new Int2(-X, Y);
+		public Int2 ReflectXRotate90() => new Int2(-Y, -X);
+		public Int2 ReflectXRotate180() => new Int2(X, -Y);
+		public Int2 ReflectXRotate270() => new Int2(Y, X);
 	}
 
 	public readonly struct ColorF

@@ -1,5 +1,10 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac6c1590_002D3f0a_002D4816_002Db9ee_002D95300a5737ef/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9ade13ff_002D1e49_002D4f13_002D9105_002Df26217c0f20b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestNullThrows" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac6c1590_002D3f0a_002D4816_002Db9ee_002D95300a5737ef/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.SimpleListTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestTuple&lt;/TestId&gt;&#xD;
@@ -21,6 +26,9 @@
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringInternal&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringLevels&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestReconnect&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort.TestIsSortedOnSortedList&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort.TestIsSortedOnUnsortedList&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort.TestNullThrows&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Steque/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

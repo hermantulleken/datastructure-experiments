@@ -47,10 +47,45 @@ namespace DataStructures
 
 			Console.WriteLine(sum/repeatCount);
 		}
-		
+
+		public static void TestTiling()
+		{
+			//var poly = TileUtils.NameToPoly("***/***/*****");
+			var poly = TileUtils.NameToPoly("*********/**********/*");
+			//var poly = TileUtils.NameToPoly("***/***/*");
+			
+			var tiles = new[]
+			{
+				poly.Normalize(), 
+				poly.Rotate90().Normalize(), 
+				poly.Rotate180().Normalize(), 
+				poly.Rotate270().Normalize(),
+				poly.ReflectX().Normalize(),
+				poly.ReflectXRotate90().Normalize(),
+				poly.ReflectXRotate180().Normalize(),
+				poly.ReflectXRotate270().Normalize()
+			};
+
+			var res = TileUtils.TileRect(tiles, 30);
+			
+			
+			if (res != null)
+			{
+				var (order, size, tiling) = res.Summarize();
+				
+				Console.WriteLine(order);
+				Console.WriteLine(size);
+				Console.WriteLine(tiling.ToPrettyString());
+			}
+			else
+			{
+				Console.WriteLine("No tiling found");
+			}
+		}
 		public static void Main(string[] _)
 		{
-			TestOctree();
+			TestTiling();
+			//TestOctree();
 			//TestInker();
 
 			//TimeAlgorithms2();

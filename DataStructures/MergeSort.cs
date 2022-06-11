@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Gamelogic.Extensions;
 using JetBrains.Annotations;
 
@@ -9,45 +8,43 @@ namespace DataStructures;
 
 public static class MergeSort
 {
-	public class UnsafeQueue<T>
+	public record struct UnsafeQueue<T>
 	{
-		private readonly IList<T> elements;
-		private int start;
-		private int end;
+		public readonly IList<T> Elements;
+		public int Start;
+		public int End;
 
 		public UnsafeQueue(IList<T> elements, int start, int end)
 		{
-			this.elements = elements ?? throw new ArgumentNullException(nameof(elements));
+			AssertInRange(elements, start, end);
 
-			if (end < 0 || end < start || end > elements.Count) throw new ArgumentException(null, nameof(end));
-			if (start < 0 || start >= elements.Count) throw new ArgumentException(null, nameof(start));
-			
-			this.start = start;
-			this.end = end;
+			Elements = elements;
+			Start = start;
+			End = end;
 		}
 
-		public bool Empty() => start == end;
+		public bool Empty() => Start == End;
 		
 		public T Peek()
 		{
 			Debug.Assert(!Empty());
-			return elements[start];
+			return Elements[Start];
 		}
 
 		public T Pop()
 		{
 			Debug.Assert(!Empty());
-			return elements[start++];
+			return Elements[Start++];
 		}
 
 		public void Push(T item)
 		{
-			Debug.Assert(end < elements.Count);
-			elements[end++] = item;
+			Debug.Assert(End < Elements.Count);
+			Elements[End++] = item;
 		}
 	}
 	
-	public static bool IsSorted(IList<IComparable> list, int start, int end)
+	public static bool IsSorted<T>(IList<T> list, int start, int end) where T : IComparable
 	{
 		list.ThrowIfNull(nameof(list));
 		if (start >= list.Count) throw new ArgumentOutOfRangeException(nameof(start));
@@ -82,7 +79,7 @@ public static class MergeSort
 		return true;
 	}
 	
-	public static IComparable Max(IList<IComparable> list, int start, int end)
+	public static IComparable Max<T>(IList<T> list, int start, int end) where T : IComparable
 	{
 		list.ThrowIfNull(nameof(list));
 		if (start >= list.Count) throw new ArgumentOutOfRangeException(nameof(start));
@@ -113,12 +110,22 @@ public static class MergeSort
 		return biggest;
 	}
 	
-	public static void Merge<T>(IList<IComparable> list, int leftStart, int rightStart, int rightEnd)
+	public static void Sort<T>(IList<T> list) where T : IComparable
 	{
-		var copy = list.ToList();
-		var left = new UnsafeQueue<IComparable>(copy, leftStart, rightStart);
-		var right = new UnsafeQueue<IComparable>(copy, rightStart, rightEnd);
-		var destination = new UnsafeQueue<IComparable>(list, leftStart, rightEnd);
+		var helpList = new List<T>(list.Count);
+		Sort(list, 0, list.Count - 1, helpList);
+	}
+
+	private static void Merge<T>(IList<T> list, int leftStart, int rightStart, int rightEnd, IList<T> copy) where T : IComparable
+	{
+		AssertInRange(list, leftStart, rightEnd);
+		AssertInRange(copy, leftStart, rightEnd);
+		
+		Copy(list, copy, leftStart, rightEnd);
+			
+		var left = new UnsafeQueue<T>(copy, leftStart, rightStart);
+		var right = new UnsafeQueue<T>(copy, rightStart, rightEnd);
+		var destination = new UnsafeQueue<T>(list, leftStart, rightEnd);
 
 		// Merge left and right into destination.
 
@@ -142,13 +149,13 @@ public static class MergeSort
 				destination.Push(left.Pop());
 			}
 			
-			#if DEBUG
+#if DEBUG
 			void AssertLoopInvariants()
 			{
 				Debug.Assert(IsSorted(list, leftStart, destinationFrontIndex));
 			
 				var biggestElement = Max(list, leftStart, destinationFrontIndex);
-				bool BiggestSmallerThan(IComparable other) => biggestElement.CompareTo(other) <= 0;
+				bool BiggestSmallerThan(T other) => biggestElement.CompareTo(other) <= 0;
 
 				if(!left.Empty())
 				{
@@ -162,10 +169,43 @@ public static class MergeSort
 			}
 			
 			AssertLoopInvariants();
-			#endif
+#endif
 		}
 	}
-	
+
+	private static void Copy<T>(IList<T> source, IList<T> destination, int start, int end)
+	{
+		AssertInRange(source, start, end);
+		AssertInRange(destination, start, end);
+
+		for (int i = start; i < end; i++)
+		{
+			destination[i] = source[i];
+		}
+	}
+
+	[Conditional("DEBUG")]
+	private static void AssertInRange<T>(ICollection<T> source, int start, int end)
+	{
+		Debug.Assert(source != null);
+		Debug.Assert(start > 0);
+		Debug.Assert(end > 0);
+		Debug.Assert(start <= end);
+		Debug.Assert(end < source.Count);
+	}
+
+	private static void Sort<T>(IList<T> list, int start, int end, IList<T> helpList) where T : IComparable
+	{
+		AssertInRange(list, start, end);
+		AssertInRange(helpList, start, end);
+		
+		if (end <= start) return;
+		int mid = start + (end - start)/2;
+		Sort(list, start, mid, helpList); // Sort left half.
+		Sort(list, mid+1, end, helpList); // Sort right half.
+		Merge(list, start, mid, end, helpList); 
+	}
+
 	/// <summary>
 	/// Checks whether a list is sorted.
 	/// </summary>
