@@ -6,6 +6,7 @@ using System.Linq;
 using Gamelogic.Extensions;
 using JetBrains.Annotations;
 
+
 namespace DataStructures
 {
 	// This tree does not support elements with the same key, and since it
@@ -380,7 +381,7 @@ namespace DataStructures
 				yield break;
 			}
 
-			var stack = new Stack<INode>();
+			var stack = new System.Collections.Generic.Stack<INode>();
 			stack.Push(root);
 
 			while (stack.Any())

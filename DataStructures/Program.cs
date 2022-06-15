@@ -5,11 +5,49 @@ using System.Drawing;
 using System.Linq;
 using Gamelogic.Extensions;
 using Gamelogic.Extensions.Algorithms;
+using DataStructures.Tiling;
 
 namespace DataStructures
 {
 	public static class Program
 	{
+		private static bool CanRuleOut10(PagedTiler.PagedUlongStripEnd potentialEnd)
+		{
+			return false;
+			//This is for the specific problem .***/*******
+			bool HasPattern(ulong pattern, ulong mask, int patternWidth)
+			{
+				for (int i = 0; i < potentialEnd.Length; i++)
+				{
+					ulong shiftedPattern = pattern;
+					ulong shiftedMask = mask;
+
+					for (int page = 0; page < PagedTiler.usedPageCount; page++)
+					{
+						int width = page == PagedTiler.usedPageCount ? Tiler.Width & 63 : 64;
+						for (int j = 0; j < width - patternWidth + 1; j++)
+						{
+							if ((potentialEnd[i*PagedTiler.pageCount + page] & shiftedMask) == shiftedPattern)
+							{
+								return true;
+							}
+
+							shiftedPattern <<= 1;
+							shiftedMask <<= 1;
+						}
+					}
+				
+					
+				}
+
+				return false;
+			}
+
+			return HasPattern(0b100001, 0b111111, 6) 
+			       || HasPattern(0b1000001, 0b1111111, 7) 
+			       || HasPattern(0b10000001, 0b11111111, 8);
+		}
+		
 		public static void TestOctree()
 		{
 			var rand = new Random();
@@ -48,35 +86,41 @@ namespace DataStructures
 			Console.WriteLine(sum/repeatCount);
 		}
 
-		public static void TestTiling()
+		public static void TestTiling<TTile, TStripEnd>()
+			where TTile : ITile
+			where TStripEnd : class, IStripEnd<TTile>
 		{
 			//var poly = TileUtils.NameToPoly("***/***/*****");
-			var poly = TileUtils.NameToPoly("*********/**********/*");
+			//var poly = TileUtils.NameToPoly("*********/**********/*");
 			//var poly = TileUtils.NameToPoly("***/***/*");
-			
-			var tiles = new[]
+			//var poly = TileUtils.NameToPoly("*******/*******/*");
+			var poly = TileUtils.NameToPoly(".***/*******");
+			var tileArray = new[]
 			{
 				poly.Normalize(), 
-				poly.Rotate90().Normalize(), 
-				poly.Rotate180().Normalize(), 
-				poly.Rotate270().Normalize(),
 				poly.ReflectX().Normalize(),
-				poly.ReflectXRotate90().Normalize(),
+				poly.Rotate180().Normalize(), 
 				poly.ReflectXRotate180().Normalize(),
+				
+				poly.Rotate90().Normalize(),
+				poly.Rotate270().Normalize(),
+				poly.ReflectXRotate90().Normalize(),
 				poly.ReflectXRotate270().Normalize()
 			};
 
-			var res = TileUtils.TileRect(tiles, 30);
-			
+			var tiles = tileArray.Select(tile => (TTile) TTile.New(tile.ToArray())).ToArray();
+
+			var res = PagedTiler.TileRect<TTile, TStripEnd> (tiles, 50, CanRuleOut10);
 			
 			if (res != null)
 			{
+				/*
 				var (order, size, tiling) = res.Summarize();
 				
 				Console.WriteLine(order);
 				Console.WriteLine(size);
 				Console.WriteLine(tiling.ToPrettyString());
-			}
+		*/	}
 			else
 			{
 				Console.WriteLine("No tiling found");
@@ -84,7 +128,16 @@ namespace DataStructures
 		}
 		public static void Main(string[] _)
 		{
-			TestTiling();
+			//TestTiling<ListTile, ImmutableStripEnd>();
+			Console.WriteLine("Took: " + Measure(TestTiling<ULongTile, PagedTiler.PagedUlongStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<ListTile, ImmutableStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<ULongTile, UlongStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<ListTile, ImmutableStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<ULongTile, UlongStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<ListTile, ImmutableStripEnd>)/1000.0f);
+
+			
+			//Measure(TestTiling<ListTile, ImmutableStripEnd>);
 			//TestOctree();
 			//TestInker();
 
@@ -311,7 +364,7 @@ namespace DataStructures
 			action();
 			watch.Stop();
 
-			return watch.ElapsedTicks;
+			return watch.ElapsedMilliseconds;
 		}
 
 		private static void TestRandomBag()
