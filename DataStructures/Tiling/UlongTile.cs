@@ -4,29 +4,40 @@ using System.Linq;
 
 namespace DataStructures.Tiling;
 
-public struct ULongTile : ITile
+public readonly struct UlongTile : ITile
 {
 	public readonly ulong[] Rows;
 	public readonly int YOffset;
 	public readonly int XOffset;
 	public readonly int MaxY;
+	public readonly int MaxX;
 
-	public ULongTile(IEnumerable<Int2> cells)
+	public readonly int[] RowStart;
+	public readonly int[] RowEnd;
+
+	public readonly int Width;
+	public readonly int Length;
+
+	public UlongTile(IEnumerable<Int2> cells)
 	{
 		Cells = cells;
+		MaxX = cells.Max(cell => cell.X);
 		MaxY = cells.Max(cell => cell.Y);
 		YOffset = cells.Min(cell => cell.Y);
 		XOffset = cells.Min(cell => cell.X);
 		
-		int length = MaxY + 1 - YOffset;
+		Length = MaxY + 1 - YOffset;
+		Width = MaxX + 1 -XOffset;
 		
-		Rows = new ulong[length];
-
+		Rows = new ulong[Length];
+		RowStart = new int[Length];
+		RowEnd = new int[Length];
+			
 		foreach (var cell in cells)
 		{
 			int x = cell.X - XOffset;
 
-			if (x is < 0 or >= Tiler.MaxWidth)
+			if (x is < 0 or >= UlongOps.MaxWidth)
 			{
 				throw new ArgumentOutOfRangeException(nameof(cells));
 			}
@@ -35,10 +46,17 @@ public struct ULongTile : ITile
 			
 			Rows[y] |= 1ul << x;
 		}
+
+		for (int rowIndex = 0; rowIndex < Length; rowIndex++)
+		{
+			ulong row = Rows[rowIndex];
+			RowStart[rowIndex] = UlongOps.LeastSignificantBit(row);
+			RowEnd[rowIndex] = UlongOps.MostSignificantBit(row);
+		}
 	}
 
 	public IEnumerable<Int2> Cells { get; }
-	public static ITile New(IEnumerable<Int2> cells) => new ULongTile(cells);
+	public static ITile New(IEnumerable<Int2> cells) => new UlongTile(cells);
 	
 	public override string ToString()
 	{

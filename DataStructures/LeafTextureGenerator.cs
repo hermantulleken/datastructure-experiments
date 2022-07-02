@@ -17,6 +17,13 @@ namespace DataStructures
 		public static readonly Int2 One = new(1, 1);
 		public static readonly Int2 Up = new(0, 1);
 		public static readonly Int2 Right = new(1, 0);
+		public static Int2 NegOne = new(-1, -1);
+
+		public Int2 LeftNeighbor => this - Right;
+		public Int2 RightNeighbor => this + Right;
+		
+		public Int2 DownNeighbor => this - Up;
+		public Int2 UpNeighbor => this + Up;
 		
 		public Int2(int x, int y)
 		{
@@ -32,8 +39,9 @@ namespace DataStructures
 		public static Int2 operator/(Int2 point, int divisor) => new(point.X / divisor, point.Y / divisor);
 		
 		public static implicit operator Vector2(Int2 point) => new(point.X, point.Y);
+		
 
-		public override string ToString() => $"[{X}, {Y}]";
+		public override string ToString() => $"({X}, {Y})";
 		
 		public static implicit operator Int2((int x, int y) point) => new (point.x, point.y);
 		public static implicit operator (int x, int y)(Int2 point) => new (point.X, point.Y);
@@ -439,6 +447,13 @@ namespace DataStructures
 
 			return bitmap;
 		}
+
+		public static bool ContainsIndex(this IGrid grid, Int2 index)
+			=>
+				index.X >= 0 &&
+				index.X < grid.Size.X &&
+				index.Y >= 0 &&
+				index.Y < grid.Size.Y;
 	}
 
 	public class VeinClassifier
@@ -473,8 +488,10 @@ namespace DataStructures
 	{
 		public T this[Int2 index] { get; set; }
 		public T this[int x, int y] { get; set; }
+
 		
 	}
+	
 
 	public class Grid
 	{
@@ -493,6 +510,9 @@ namespace DataStructures
 				}
 			}
 		}
+
+		public static IEnumerable<Int2> Rect(Int2 size) => Rect(Int2.Zero, size);
+		
 
 		public static IEnumerable<Int2> Row(Int2 start, int length)
 			=> Rect(start, new Int2(length, 1));

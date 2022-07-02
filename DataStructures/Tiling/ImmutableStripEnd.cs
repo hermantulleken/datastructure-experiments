@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DataStructures.Tiling;
 
-public sealed class ImmutableStripEnd : IStripEnd<ListTile>
+public sealed class ImmutableStripEnd : IStripEnd<ListTile, object>
 {
 	public class Comparer : IEqualityComparer<ImmutableStripEnd>
 	{
@@ -71,7 +71,7 @@ public sealed class ImmutableStripEnd : IStripEnd<ListTile>
 			
 			if (data != null)
 			{
-				Debug.Assert(other.data != null, "other.data != null");
+				GLDebug.Assert(other.data != null, "other.data != null");
 				
 				for (int j = 0; j < length; j++)
 				{
@@ -89,7 +89,7 @@ public sealed class ImmutableStripEnd : IStripEnd<ListTile>
 		}
 	}
 	
-	public static IStripEnd<ListTile> New(int width) => new ImmutableStripEnd(width);
+	public static IStripEnd<ListTile, object> New(int width) => new ImmutableStripEnd(width);
 
 	public override string ToString()
 	{
@@ -147,7 +147,7 @@ public sealed class ImmutableStripEnd : IStripEnd<ListTile>
 		
 		void ReduceFullRows()
 		{
-			var empty = FindEmpty();
+			var empty = FindEmpty(null);
 
 			if (empty.Y != 0)
 			{
@@ -159,8 +159,8 @@ public sealed class ImmutableStripEnd : IStripEnd<ListTile>
 		InitializeData();
 		ReduceFullRows();
 
-		var empty = FindEmpty();
-		Debug.Assert(empty.Y == 0);
+		var empty = FindEmpty(null);
+		GLDebug.Assert(empty.Y == 0);
 
 		if (IsStraight)
 		{
@@ -173,9 +173,9 @@ public sealed class ImmutableStripEnd : IStripEnd<ListTile>
 		}
 	}
 
-	public IStripEnd Place(Int2 position, ListTile cells) => new ImmutableStripEnd(this, position, cells);
+	public IStripEnd Place(Object _, Int2 position, ListTile cells) => new ImmutableStripEnd(this, position, cells);
 
-	public Int2 FindEmpty()
+	public Int2 FindEmpty(object _)
 	{
 		if (IsStraight)
 		{
@@ -193,7 +193,7 @@ public sealed class ImmutableStripEnd : IStripEnd<ListTile>
 		return new Int2(0, length);
 	}
 
-	public bool CanPlace(Int2 position, ListTile tile)
+	public bool CanPlace(object _, Int2 position, ListTile tile)
 	{
 		bool InRangeAndEmpty(Int2 point) => point.X >= 0 && point.X < width && !this[point];
 		

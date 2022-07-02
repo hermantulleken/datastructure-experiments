@@ -1,53 +1,113 @@
-﻿using System;
+﻿#define USE_PAGED
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using Gamelogic.Extensions;
 using Gamelogic.Extensions.Algorithms;
 using DataStructures.Tiling;
 
 namespace DataStructures
 {
-	public static class Program
+
+	class TTetromino<TWidth> : ILongTile<TWidth, TTetromino<TWidth>>
+		where TWidth : IWidth
 	{
-		private static bool CanRuleOut10(PagedTiler.PagedUlongStripEnd potentialEnd)
+		public static bool CanRuleOut(Tiler<TWidth, TTetromino<TWidth>>.StripEnd stripEnd)
 		{
 			return false;
-			//This is for the specific problem .***/*******
-			bool HasPattern(ulong pattern, ulong mask, int patternWidth)
-			{
-				for (int i = 0; i < potentialEnd.Length; i++)
-				{
-					ulong shiftedPattern = pattern;
-					ulong shiftedMask = mask;
-
-					for (int page = 0; page < PagedTiler.usedPageCount; page++)
-					{
-						int width = page == PagedTiler.usedPageCount ? Tiler.Width & 63 : 64;
-						for (int j = 0; j < width - patternWidth + 1; j++)
-						{
-							if ((potentialEnd[i*PagedTiler.pageCount + page] & shiftedMask) == shiftedPattern)
-							{
-								return true;
-							}
-
-							shiftedPattern <<= 1;
-							shiftedMask <<= 1;
-						}
-					}
-				
-					
-				}
-
-				return false;
-			}
-
-			return HasPattern(0b100001, 0b111111, 6) 
-			       || HasPattern(0b1000001, 0b1111111, 7) 
-			       || HasPattern(0b10000001, 0b11111111, 8);
 		}
+	}
+	
+	[SuppressMessage("ReSharper", "IdentifierTypo")]
+	public static class Program
+	{
+		public static readonly IDictionary<string, string[]> PagedTileHeuristicFunctions =
+			new Dictionary<string, string[]>()
+			{
+				{
+					".***/*******", 
+					new[]
+					{
+						".*/*.*/.*", 
+						"******/*....*", 
+						"*******/*.....*", 
+						"********/*......*"
+					}
+				},
+
+				{
+					".*/****", 
+					new[]
+					{
+						"*****/*...*", 
+						".*/*.*/.*",
+						".**/*..*/.*",
+						//".*/*.*/*.*/.*"
+					}
+				},
+
+				{
+					".*/*****", 
+					new string[]{ }
+				},
+			};
 		
+		public static readonly IDictionary<string, Func<Tiler.Context, Tiler.UlongStripEnd, bool>> TileHeuristicFunctions =
+			new Dictionary<string, Func<Tiler.Context, Tiler.UlongStripEnd, bool>>()
+			{
+				{
+					".***/*******", 
+					RuleOut_oxxx_xxxxx
+				},
+
+				{
+					".*/****", 
+					RuleOut_ox_xxxx
+				},
+				
+				{
+					".*/*****", 
+					RuleOut_ox_xxxxx
+				}
+			};
+
+		private static bool RuleOutNothing(PagedTiler.Context _, PagedTiler.StripEnd __) => false;
+		private static bool RuleOutNothing(Tiler.Context _, Tiler.UlongStripEnd __) => false;
+		
+		private static bool RuleOut_ox_xxxx(PagedTiler.Context context, PagedTiler.StripEnd potentialEnd)
+			=> TileUtils.HasPattern(0b10001, 0b11111, 5, potentialEnd, context);
+
+		private static bool RuleOut_ox_xxxxx(PagedTiler.Context context, PagedTiler.StripEnd potentialEnd)
+			=> TileUtils.HasPattern(0b10001, 0b11111, 5, potentialEnd, context)
+			   || TileUtils.HasPattern(0b100001, 0b111111, 6, potentialEnd, context)
+			   || TileUtils.HasPattern(0b1001001, 0b1111111, 7, potentialEnd, context)
+			   ;
+
+
+		private static bool RuleOut_oxxx_xxxxx(PagedTiler.Context context, PagedTiler.StripEnd potentialEnd) 
+			=> TileUtils.HasPattern(0b100001, 0b111111, 6, potentialEnd, context) 
+			   || TileUtils.HasPattern(0b1000001, 0b1111111, 7, potentialEnd, context)
+			   || TileUtils.HasPattern(0b10000001, 0b11111111, 8, potentialEnd, context);
+		
+		private static bool RuleOut_ox_xxxx(Tiler.Context context, Tiler.UlongStripEnd potentialEnd)
+			=> TileUtils.HasPattern(0b10001, 0b11111, 5, potentialEnd, context);
+		
+		private static bool RuleOut_ox_xxxxx(Tiler.Context context, Tiler.UlongStripEnd potentialEnd)
+			=> TileUtils.HasPattern(0b10001, 0b11111, 5, potentialEnd, context)
+			   || TileUtils.HasPattern(0b100001, 0b111111, 6, potentialEnd, context)
+			   || TileUtils.HasPattern(0b1001001, 0b1111111, 7, potentialEnd, context)
+		;
+
+		private static bool RuleOut_oxxx_xxxxx(Tiler.Context context, Tiler.UlongStripEnd potentialEnd) 
+			=> TileUtils.HasPattern(0b100001, 0b111111, 6, potentialEnd, context) 
+			   || TileUtils.HasPattern(0b1000001, 0b1111111, 7, potentialEnd, context)
+			   || TileUtils.HasPattern(0b10000001, 0b11111111, 8, potentialEnd, context);
+
 		public static void TestOctree()
 		{
 			var rand = new Random();
@@ -86,32 +146,39 @@ namespace DataStructures
 			Console.WriteLine(sum/repeatCount);
 		}
 
-		public static void TestTiling<TTile, TStripEnd>()
-			where TTile : ITile
-			where TStripEnd : class, IStripEnd<TTile>
+		public static void TestTiling()
 		{
-			//var poly = TileUtils.NameToPoly("***/***/*****");
-			//var poly = TileUtils.NameToPoly("*********/**********/*");
-			//var poly = TileUtils.NameToPoly("***/***/*");
-			//var poly = TileUtils.NameToPoly("*******/*******/*");
-			var poly = TileUtils.NameToPoly(".***/*******");
-			var tileArray = new[]
-			{
-				poly.Normalize(), 
-				poly.ReflectX().Normalize(),
-				poly.Rotate180().Normalize(), 
-				poly.ReflectXRotate180().Normalize(),
-				
-				poly.Rotate90().Normalize(),
-				poly.Rotate270().Normalize(),
-				poly.ReflectXRotate90().Normalize(),
-				poly.ReflectXRotate270().Normalize()
-			};
+			//string tileName = ".***/*******";
+			//int width = 70;
 
-			var tiles = tileArray.Select(tile => (TTile) TTile.New(tile.ToArray())).ToArray();
-
-			var res = PagedTiler.TileRect<TTile, TStripEnd> (tiles, 50, CanRuleOut10);
+			string tileName = ".***/*******";
+			int width = 35;
 			
+			var tiles = TileUtils
+				.NameToPoints(tileName)
+				.GetAllSymmetriesNormalized()
+				.Select(points => points.ToUlongTile())
+				.ToArray();
+
+#if USE_PAGED
+			Pattern MakePattern(string name) => new(new UlongTile(TileUtils.NameToPoints(name)));
+
+			var patterns = PagedTileHeuristicFunctions[tileName].Select(MakePattern).ToArray();
+
+			bool CanRuleOut(PagedTiler.Context context, PagedTiler.StripEnd stripEnd)
+				//=> false;
+				=> TileUtils.HasPattern(context, stripEnd, patterns[1])
+					|| TileUtils.HasPattern(context, stripEnd, patterns[3]) 
+					|| TileUtils.HasPattern(context, stripEnd, patterns[0]) 
+				    || TileUtils.HasPattern(context, stripEnd, patterns[2])
+				   //false
+				   ;
+			
+			var res = PagedTiler.TileRect(tiles, width, CanRuleOut);
+#else
+			var canRuleOut = TileHeuristicFunctions.ContainsKey(tileName) ? TileHeuristicFunctions[tileName] : RuleOutNothing;
+			var res = Tiler.TileRect<UlongTile, Tiler.UlongStripEnd>(tiles, width, canRuleOut);
+#endif		
 			if (res != null)
 			{
 				/*
@@ -120,23 +187,64 @@ namespace DataStructures
 				Console.WriteLine(order);
 				Console.WriteLine(size);
 				Console.WriteLine(tiling.ToPrettyString());
-		*/	}
+				*/
+				
+				Console.WriteLine("Found a tiling!");
+			}
 			else
 			{
 				Console.WriteLine("No tiling found");
 			}
 		}
-		public static void Main(string[] _)
+		
+		public static void TestUlongTiler()
 		{
+			string tileName = ".***/*******";
+			int width = 35;
+			
+			var tiles = TileUtils
+				.NameToPoints(tileName)
+				.GetAllSymmetriesNormalized()
+				.Select(points => points.ToUlongTile())
+				.ToArray();
+			
+			var res = Tiler.TileRect<UlongTile, Tiler.UlongStripEnd>(tiles, width, RuleOutNothing);
+
+			Console.WriteLine(res ? "Found a tiling!" : "No tiling found");
+		}
+		
+		
+		public static void TestUlongTiler2()
+		{
+			string tileName = ".***/*******";
+			
+			var tiles = TileUtils
+				.NameToPoints(tileName)
+				.GetAllSymmetriesNormalized()
+				.Select(points => points.ToUlongTile())
+				.ToArray();
+			
+			var res = Tiler<Width35, DefaultLongTile<Width35>>.TileRect(tiles);
+
+			Console.WriteLine(res ? "Found a tiling!" : "No tiling found");
+		}
+		
+		[SupportedOSPlatform("windows")]
+		public static void Main(string[] args)
+		{
+			TileImage.Program.Main1(args);
+
 			//TestTiling<ListTile, ImmutableStripEnd>();
-			Console.WriteLine("Took: " + Measure(TestTiling<ULongTile, PagedTiler.PagedUlongStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling)/1000.0f);
 			//Console.WriteLine("Took: " + Measure(TestTiling<ListTile, ImmutableStripEnd>)/1000.0f);
-			//Console.WriteLine("Took: " + Measure(TestTiling<ULongTile, UlongStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<UlongTile, UlongStripEnd>)/1000.0f);
 			//Console.WriteLine("Took: " + Measure(TestTiling<ListTile, ImmutableStripEnd>)/1000.0f);
-			//Console.WriteLine("Took: " + Measure(TestTiling<ULongTile, UlongStripEnd>)/1000.0f);
+			//Console.WriteLine("Took: " + Measure(TestTiling<UlongTile, UlongStripEnd>)/1000.0f);
 			//Console.WriteLine("Took: " + Measure(TestTiling<ListTile, ImmutableStripEnd>)/1000.0f);
 
-			
+			//Console.WriteLine("Took: " + Measure(TestUlongTiler)/1000.0f); //45.12
+			//Console.WriteLine("Took: " + Measure(TestUlongTiler2)/1000.0f); //45.12
+
 			//Measure(TestTiling<ListTile, ImmutableStripEnd>);
 			//TestOctree();
 			//TestInker();
@@ -149,6 +257,8 @@ namespace DataStructures
 			//CombinatorialTest();
 			//BasicTest();
 			//ProfileStringBuilding();
+
+			//Console.ReadKey();
 		}
 
 		private static void TestInker()

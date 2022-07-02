@@ -86,7 +86,7 @@ public class BinaryTree<T> where T : IComparable
 			}
 			else
 			{
-				Debug.Assert(IsRightChild);
+				GLDebug.Assert(IsRightChild);
 				Parent[right] = other;
 			}
 

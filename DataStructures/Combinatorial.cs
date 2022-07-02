@@ -2,9 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-
+using DataStructures;
 using JetBrains.Annotations;
 
 namespace Gamelogic.Extensions.Algorithms
@@ -284,8 +283,8 @@ namespace Gamelogic.Extensions.Algorithms
 			{
 				int index = n - 2;
 
-				Debug.Assert(index >= 0, "index must be greater than or equal to 0");
-				Debug.Assert(index + 1 < permutation.Length, "index + 1 must be smaller than permutation length, but index == " + index);
+				GLDebug.Assert(index >= 0, "index must be greater than or equal to 0");
+				GLDebug.Assert(index + 1 < permutation.Length, "index + 1 must be smaller than permutation length, but index == " + index);
 
 				while (permutation[index] >= permutation[index + 1]) //while we overflow, we carry over
 				{

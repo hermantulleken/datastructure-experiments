@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace DataStructures.Tiling;
 
-public class Graph<T, TStripEnd> where TStripEnd : IStripEnd
+public class Graph<T, TStripEnd>
 {
 	private readonly Dictionary<TStripEnd, IList<T>> graphEdges;
 	

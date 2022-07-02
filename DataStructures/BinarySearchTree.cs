@@ -114,7 +114,7 @@ namespace DataStructures
 					return Left.Find(keyToFind);
 				}
 
-				Debug.Assert(keyToFind > Key);
+				GLDebug.Assert(keyToFind > Key);
 				
 				return Right.Find(keyToFind);
 			}
@@ -138,7 +138,7 @@ namespace DataStructures
 					return;
 				}
 				
-				Debug.Assert(subtree.Key >= Key);
+				GLDebug.Assert(subtree.Key >= Key);
 				InsertAt(ref Right, subtree);
 			}
 
@@ -197,18 +197,18 @@ namespace DataStructures
 					//These assertions are true because non-empty nodes with no children should be singletons
 					if (Left.IsEmpty)
 					{
-						Debug.Assert(!Right.IsEmpty);
+						GLDebug.Assert(!Right.IsEmpty);
 						InsertSubtreeHere(Right);
 					}
 					else if (Right.IsEmpty)
 					{
-						Debug.Assert(!Left.IsEmpty);
+						GLDebug.Assert(!Left.IsEmpty);
 						InsertSubtreeHere(Left);
 					}
 					else
 					{
-						Debug.Assert(!Right.IsEmpty);
-						Debug.Assert(!Left.IsEmpty);
+						GLDebug.Assert(!Right.IsEmpty);
+						GLDebug.Assert(!Left.IsEmpty);
 
 						InsertSubtreeHere(choice.Value == Direction.Left ? Left : Right);
 					}
@@ -677,7 +677,7 @@ namespace DataStructures
 				Item = item
 			};
 
-			Debug.Assert(lastNode.NextNode == null);
+			GLDebug.Assert(lastNode.NextNode == null);
 			lastNode.NextNode = node;
 			lastNode = node;
 			

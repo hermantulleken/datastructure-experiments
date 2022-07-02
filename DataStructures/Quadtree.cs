@@ -221,8 +221,8 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 		{
 			bool IndexInRange(int index) => Quadtree.IndexInRange(index, 0, Node.Size);
 			
-			Debug.Assert(IndexInRange(x));
-			Debug.Assert(IndexInRange(y));
+			GLDebug.Assert(IndexInRange(x));
+			GLDebug.Assert(IndexInRange(y));
 		}
 	}
 	
@@ -233,7 +233,7 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 		
 		protected BaseNode(int size)
 		{
-			Debug.Assert(Quadtree.IsPot(2));
+			GLDebug.Assert(Quadtree.IsPot(2));
 			
 			Size = size;
 			HalfSize = size / 2;
@@ -336,7 +336,7 @@ public class SquarePotQuadtree<T> : QuadtreeBase<T>
 
 			if (node is Leaf { Size: 1 } leaf)
 			{
-				Debug.Assert(!leaf.Value.Equals(value));
+				GLDebug.Assert(!leaf.Value.Equals(value));
 			}
 			
 			return node switch
@@ -414,8 +414,8 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 
 		protected TreeList(Func<int, T, IQuadtree<T>> quadtreeFactory, int treeCount, int treeSize, T initialElement = default)
 		{
-			Debug.Assert(treeCount >= 1);
-			Debug.Assert(Quadtree.IsPot(treeSize));
+			GLDebug.Assert(treeCount >= 1);
+			GLDebug.Assert(Quadtree.IsPot(treeSize));
 			
 			TreeSize = treeSize;
 			trees = new IQuadtree<T>[treeCount];
@@ -468,9 +468,9 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 		public HorizontalQuadtree(Func<int, T, IQuadtree<T>> quadtreeFactory, int width, int height, T initialElement = default)
 			: base(quadtreeFactory, width / height, height, initialElement)
 		{
-			Debug.Assert(Quadtree.IsPot(width));
-			Debug.Assert(Quadtree.IsPot(height));
-			Debug.Assert(width >= height);
+			GLDebug.Assert(Quadtree.IsPot(width));
+			GLDebug.Assert(Quadtree.IsPot(height));
+			GLDebug.Assert(width >= height);
 			
 			//If all the above is true, width / height is a positive integer
 
@@ -495,9 +495,9 @@ public sealed class Quadtree<T> : QuadtreeBase<T>
 		public VerticalQuadtree(Func<int, T, IQuadtree<T>> quadtreeFactory, int width, int height, T initialElement = default)
 			: base(quadtreeFactory, height / width, height, initialElement)
 		{
-			Debug.Assert(Quadtree.IsPot(width));
-			Debug.Assert(Quadtree.IsPot(height));
-			Debug.Assert(height >= width);
+			GLDebug.Assert(Quadtree.IsPot(width));
+			GLDebug.Assert(Quadtree.IsPot(height));
+			GLDebug.Assert(height >= width);
 			
 			//If all the above is true, height / width is a positive integer
 			

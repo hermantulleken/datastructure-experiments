@@ -237,9 +237,9 @@ public class CubePotOctree<T> : OctreeBase<T>
 		{
 			bool IndexInRange(int index) => Octree.IndexInRange(index, 0, Node.Size);
 			
-			Debug.Assert(IndexInRange(x));
-			Debug.Assert(IndexInRange(y));
-			Debug.Assert(IndexInRange(z));
+			GLDebug.Assert(IndexInRange(x));
+			GLDebug.Assert(IndexInRange(y));
+			GLDebug.Assert(IndexInRange(z));
 		}
 	}
 	
@@ -252,7 +252,7 @@ public class CubePotOctree<T> : OctreeBase<T>
 
 		protected BaseNode(int size)
 		{
-			Debug.Assert(Octree.IsPot(2));
+			GLDebug.Assert(Octree.IsPot(2));
 			
 			Size = size;
 			HalfSize = size / 2;
@@ -361,7 +361,7 @@ public class CubePotOctree<T> : OctreeBase<T>
 
 			if (node is Leaf { Size: 1 } leaf)
 			{
-				Debug.Assert(!leaf.Value.Equals(value));
+				GLDebug.Assert(!leaf.Value.Equals(value));
 			}
 			
 			return node switch

@@ -27,19 +27,19 @@ public static class MergeSort
 		
 		public T Peek()
 		{
-			Debug.Assert(!Empty());
+			GLDebug.Assert(!Empty());
 			return Elements[Start];
 		}
 
 		public T Pop()
 		{
-			Debug.Assert(!Empty());
+			GLDebug.Assert(!Empty());
 			return Elements[Start++];
 		}
 
 		public void Push(T item)
 		{
-			Debug.Assert(End < Elements.Count);
+			GLDebug.Assert(End < Elements.Count);
 			Elements[End++] = item;
 		}
 	}
@@ -62,7 +62,7 @@ public static class MergeSort
 		for (int i = start + 1; i < end; i++)
 		{
 			//Negative indexes are impossible
-			Debug.Assert(i - 1 >= 0);
+			GLDebug.Assert(i - 1 >= 0);
 			
 			var item0 = list[i - 1];
 			var item1 = list[i];
@@ -145,26 +145,26 @@ public static class MergeSort
 			}
 			else 
 			{
-				Debug.Assert(right.Peek().CompareTo(left.Peek()) <= 0);
+				GLDebug.Assert(right.Peek().CompareTo(left.Peek()) <= 0);
 				destination.Push(left.Pop());
 			}
 			
 #if DEBUG
 			void AssertLoopInvariants()
 			{
-				Debug.Assert(IsSorted(list, leftStart, destinationFrontIndex));
+				GLDebug.Assert(IsSorted(list, leftStart, destinationFrontIndex));
 			
 				var biggestElement = Max(list, leftStart, destinationFrontIndex);
 				bool BiggestSmallerThan(T other) => biggestElement.CompareTo(other) <= 0;
 
 				if(!left.Empty())
 				{
-					Debug.Assert(BiggestSmallerThan(left.Peek()));
+					GLDebug.Assert(BiggestSmallerThan(left.Peek()));
 				}
 
 				if (!right.Empty())
 				{
-					Debug.Assert(BiggestSmallerThan(right.Peek()));
+					GLDebug.Assert(BiggestSmallerThan(right.Peek()));
 				}
 			}
 			
@@ -187,11 +187,11 @@ public static class MergeSort
 	[Conditional("DEBUG")]
 	private static void AssertInRange<T>(ICollection<T> source, int start, int end)
 	{
-		Debug.Assert(source != null);
-		Debug.Assert(start > 0);
-		Debug.Assert(end > 0);
-		Debug.Assert(start <= end);
-		Debug.Assert(end < source.Count);
+		GLDebug.Assert(source != null);
+		GLDebug.Assert(start > 0);
+		GLDebug.Assert(end > 0);
+		GLDebug.Assert(start <= end);
+		GLDebug.Assert(end < source.Count);
 	}
 
 	private static void Sort<T>(IList<T> list, int start, int end, IList<T> helpList) where T : IComparable
@@ -226,12 +226,12 @@ public static class MergeSort
 		}
 		
 		//We have at least two elements
-		Debug.Assert(list.Count >= 2);
+		GLDebug.Assert(list.Count >= 2);
 		
 		for (int i = 1; i < list.Count; i++)
 		{
 			//Negative indexes are impossible
-			Debug.Assert(i - 1 >= 0);
+			GLDebug.Assert(i - 1 >= 0);
 			
 			var item0 = list[i - 1];
 			var item1 = list[i];

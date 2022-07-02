@@ -3,16 +3,18 @@
 public interface IStripEnd
 {
 	bool IsStraight { get; }
-	Int2 FindEmpty();
+	
 }
 
-public interface IStripEnd<in TTile> : IStripEnd
+public interface IStripEnd<in TTile, in TContext> : IStripEnd
 {
-	bool CanPlace(Int2 position, TTile tile);
-	IStripEnd Place(Int2 position, TTile longTile);
+	Int2 FindEmpty(TContext context);
+	
+	bool CanPlace(TContext context, Int2 position, TTile tile);
+	IStripEnd Place(TContext context, Int2 position, TTile longTile);
 	
 #pragma warning disable CA2252
-	static abstract IStripEnd<TTile> New(int width);
+	static abstract IStripEnd<TTile, TContext> New(int width);
 	static abstract object GetComparer();
 #pragma warning restore CA2252
 }

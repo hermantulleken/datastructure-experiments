@@ -18,7 +18,7 @@ public class TestUlongTile
 			new (2, 2),
 		};
 
-		var tile = new ULongTile(cells);
+		var tile = new UlongTile(cells);
 		
 		Assert.That(tile.Rows.Length, Is.EqualTo(3));
 		
@@ -40,7 +40,7 @@ public class TestUlongTile
 			new (2, 2),
 		};
 
-		var tile = new ULongTile(cells);
+		var tile = new UlongTile(cells);
 		
 		Assert.That(tile.Rows.Length, Is.EqualTo(3));
 		
@@ -63,7 +63,7 @@ public class TestUlongTile
 			new (2, 2),
 		}.Select(p => p + offset);
 
-		var tile = new ULongTile(cells);
+		var tile = new UlongTile(cells);
 		
 		Assert.That(tile.Rows.Length, Is.EqualTo(3));
 		Assert.That(tile.XOffset, Is.EqualTo(offset.X));
@@ -88,7 +88,7 @@ public class TestUlongTile
 			new (2, 2),
 		}.Select(p => p + offset);
 
-		var tile = new ULongTile(cells);
+		var tile = new UlongTile(cells);
 		
 		Assert.That(tile.Rows.Length, Is.EqualTo(3));
 		Assert.That(tile.XOffset, Is.EqualTo(offset.X));

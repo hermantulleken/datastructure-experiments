@@ -50,7 +50,7 @@ namespace DataStructures
 				queues.Enqueue(target);
 				target = queue1; //reuse queue we don't need anymore
 
-				Debug.Assert(queues.Count > 0);
+				GLDebug.Assert(queues.Count > 0);
 			}
 
 			void CopyToList(Queue<T> finalSortedQueue1)
@@ -77,7 +77,7 @@ namespace DataStructures
 
 			static void MergeQueues(Queue<T> target, Queue<T> queue1, Queue<T> queue2)
 			{
-				Debug.Assert(target.Empty);
+				GLDebug.Assert(target.Empty);
 
 				while (true)
 				{
@@ -164,14 +164,14 @@ namespace DataStructures
 		private static void AssertMergeLoopInvariant<T>(IList<T> list, int start, int pointer0, int pointer1, int end)
 			where T : IComparable<T>
 		{
-			Debug.Assert(IsSorted(list, start, pointer0));
-			Debug.Assert(IsSorted(list, pointer0, pointer1));
-			Debug.Assert(IsSorted(list, pointer1, end));
+			GLDebug.Assert(IsSorted(list, start, pointer0));
+			GLDebug.Assert(IsSorted(list, pointer0, pointer1));
+			GLDebug.Assert(IsSorted(list, pointer1, end));
 
 			if (pointer0 > start && pointer1 < end)
 			{
-				Debug.Assert(SmallerThanOrEquals(list[pointer0 - 1], list[pointer0]));
-				Debug.Assert(SmallerThanOrEquals(list[pointer0 - 1], list[pointer1]));
+				GLDebug.Assert(SmallerThanOrEquals(list[pointer0 - 1], list[pointer0]));
+				GLDebug.Assert(SmallerThanOrEquals(list[pointer0 - 1], list[pointer1]));
 			}
 		}
 
@@ -180,9 +180,9 @@ namespace DataStructures
 		{
 			bool IndexRelationsValid() => start <= mid && mid <= end;
 
-			Debug.Assert(IndexRelationsValid());
-			Debug.Assert(IsSorted(list, start, mid));
-			Debug.Assert(IsSorted(list, mid, end));
+			GLDebug.Assert(IndexRelationsValid());
+			GLDebug.Assert(IsSorted(list, start, mid));
+			GLDebug.Assert(IsSorted(list, mid, end));
 		}
 
 		public static bool IsSorted<T>(IList<T> list) where T : IComparable<T>
@@ -296,14 +296,14 @@ namespace DataStructures
 				return; 
 			}
 			
-			Debug.Assert(list.Count > 1);
+			GLDebug.Assert(list.Count > 1);
 
 			for (int i = 0; i < list.Count - 1; i++)
 			{
 				SwapSmallestAfterIndexToIndex(i);
 			}
 			
-			Debug.Assert(IsSorted(list, 0, list.Count));
+			GLDebug.Assert(IsSorted(list, 0, list.Count));
 		}
 
 		public static void SelectionSort_Inline<T>(IList<T> list) where T : IComparable<T>
@@ -318,7 +318,7 @@ namespace DataStructures
 				return; 
 			}
 			
-			Debug.Assert(list.Count > 1);
+			GLDebug.Assert(list.Count > 1);
 
 			for (int i = start; i < end - 1; i++)
 			{
@@ -340,7 +340,7 @@ namespace DataStructures
 				}
 			}
 
-			Debug.Assert(IsSorted(list, start, end));
+			GLDebug.Assert(IsSorted(list, start, end));
 		}
 
 		public static void MergeSort_Recursive_InPlace<T>(IList<T> list) where T : IComparable<T>
@@ -492,7 +492,7 @@ namespace DataStructures
 				MergePieces(pieceLength);
 			}
 			
-			Debug.Assert(IsSorted(list, 0, list.Count));
+			GLDebug.Assert(IsSorted(list, 0, list.Count));
 		}
 
 		public static void MergeSort_Iterative_NewList<T>(IList<T> list) where T : IComparable<T>
@@ -527,7 +527,7 @@ namespace DataStructures
 				MergePieces(pieceLength);
 			}
 			
-			Debug.Assert(IsSorted(list, 0, list.Count));
+			GLDebug.Assert(IsSorted(list, 0, list.Count));
 		}
 		
 		private static void MergeSort_Iterative_NewList<T>(
@@ -578,7 +578,7 @@ namespace DataStructures
 			monitor.Stop();
 			monitor.SetPerformanceData(data);
 			
-			Debug.Assert(IsSorted(list, 0, list.Count));
+			GLDebug.Assert(IsSorted(list, 0, list.Count));
 		}
 
 		public static void MergeSort_Iterative_NewList_Smart<T>(IList<T> list) where T : IComparable<T>
@@ -621,7 +621,7 @@ namespace DataStructures
 					end = Math.Min(end, sortEnd);
 					InsertionSort(list, start, end);
 					
-					Debug.Assert(IsSorted(list, start, end));
+					GLDebug.Assert(IsSorted(list, start, end));
 					//Console.WriteLine(list.ToPrettyString());
 				}
 			}
@@ -633,7 +633,7 @@ namespace DataStructures
 				MergePieces(pieceLength);
 			}
 			
-			Debug.Assert(IsSorted(list, 0, list.Count));
+			GLDebug.Assert(IsSorted(list, 0, list.Count));
 		}
 		
 		private static void MergeSort_Iterative_NewList_Smart<T>(
@@ -674,7 +674,7 @@ namespace DataStructures
 					end = Math.Min(end, sortEnd);
 					ShellSort(list, start, end);
 					
-					Debug.Assert(IsSorted(list, start, end));
+					GLDebug.Assert(IsSorted(list, start, end));
 					//Console.WriteLine(list.ToPrettyString());
 				}
 			}
@@ -692,7 +692,7 @@ namespace DataStructures
 			
 			monitor.Stop();
 			monitor.SetPerformanceData(data);
-			Debug.Assert(IsSorted(list, 0, list.Count));
+			GLDebug.Assert(IsSorted(list, 0, list.Count));
 		}
 		
 		public static void MergeSort_Iterative_InPlace_Smart<T>(IList<T> list) where T : IComparable<T>
@@ -723,7 +723,7 @@ namespace DataStructures
 					
 					ShellSort(list, start, end);
 					
-					Debug.Assert(IsSorted(list, start, end));
+					GLDebug.Assert(IsSorted(list, start, end));
 				}
 			}
 
@@ -734,10 +734,10 @@ namespace DataStructures
 				MergePieces(pieceLength);
 			}
 
-			Debug.Assert(IsSorted(list, 0, count));
+			GLDebug.Assert(IsSorted(list, 0, count));
 		}
 		
-		private static void ThrowIfReached() => Debug.Assert(false, "Unreachable");
+		private static void ThrowIfReached() => GLDebug.Assert(false, "Unreachable");
 		
 		private static bool SmallerThan<T>(T item1, T item2) where T : IComparable<T>
 			=> item1.CompareTo(item2) < 0;
