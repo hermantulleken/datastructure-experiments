@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using Gamelogic.Extensions;
 using Gamelogic.Extensions.Algorithms;
 using DataStructures.Tiling;

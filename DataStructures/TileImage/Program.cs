@@ -5,29 +5,46 @@ using System.Runtime.Versioning;
 
 namespace DataStructures.TileImage;
 
-public class Program
+[SupportedOSPlatform("windows")]
+public static class Program
 {
 	private const string WorkingDirectory = "C:/Work/Files/";
-	private const string ImageFile = "11omino5_25x77.gif";// "10omino07_4x5.gif"; //"small.png";
+	private const string ImageFile = "Y5 Prime 12x50.PNG"; 
+	
+	private static readonly string Basename = Path.GetFileNameWithoutExtension(ImageFile);
 	private const string ImageFilePath = WorkingDirectory + ImageFile;
-	
-	
-	[SupportedOSPlatform("windows")]
-	public static void Main1(string[] args)
+	private static readonly string SvgFile = Basename + ".svg";
+	private static readonly string SvgFilePath = WorkingDirectory + SvgFile;
+
+	public static void Main1(string[] args) => ConvertTilingImageToSvg();
+
+	private static void ConvertTilingImageToSvg() =>ConvertTilingImageToSvg(ImageFilePath, SvgFilePath);
+
+	private static void ConvertTilingImageToSvg(string imagePath, string svgPath)
 	{
 		try
 		{
-			if (!PathsExist()) return;
-
-			var image = new Bitmap(ImageFilePath);
+			if (!PathsExist(imagePath)) return;
+			
+			var scanSettings = new PolyominoScanner.Settings
+			{
+				BordersOverlap = true, 
+				LinesArePure = true
+			};
+			
+			var image = new Bitmap(imagePath);
 			var grid = (Grid<Color>) image.ToGrid().Apply(color => color.ToColor());
-
-			PolyominoScanner.GetTiles(grid);
+			var (gridSize, tiles) = PolyominoScanner.GetTiles(grid, scanSettings);
+			var settings = Svg.DefaultSettings with { FillColor = Svg.Color.Blue, LineWidth = 1.323f/2, Scale = 10};
+			string svg = Svg.ToSvg(gridSize, tiles, settings);
+			
+			Console.WriteLine("SVG string created.");
+			
+			File.WriteAllText(svgPath, svg);
 		}
 		catch (ArgumentException e)
 		{
 			Console.WriteLine(e);
-			Console.WriteLine(e.InnerException);
 		}
 		//catch (Exception e)
 		//{
@@ -35,17 +52,11 @@ public class Program
 		//}
 	}
 
-	private static bool PathsExist()
+	private static bool PathsExist(string imagePath)
 	{
-		if (!Directory.Exists(WorkingDirectory))
+		if (!File.Exists(imagePath))
 		{
-			Console.WriteLine(WorkingDirectory + " does not exist.");
-			return false;
-		}
-
-		if (!File.Exists(ImageFilePath))
-		{
-			Console.WriteLine(ImageFile + " does not exist.");
+			Console.WriteLine(imagePath + " does not exist.");
 			return false;
 		}
 
