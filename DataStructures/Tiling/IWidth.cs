@@ -7,6 +7,8 @@ public interface IWidth
 	static abstract ulong LastRowMask { get; }
 	static abstract int EmptyBitCount { get; }
 	static abstract ulong EmptyBitMask { get; }
+	
+	static abstract int Size { get; }
 #pragma warning restore CA2252
 }
 
@@ -17,6 +19,8 @@ public sealed class Width65 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << 1;
 	
 	public static int EmptyBitCount => 63;
+
+	public static int Size => 2;
 }
 
 public sealed class Width4 : IWidth
@@ -27,6 +31,8 @@ public sealed class Width4 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width10 : IWidth
@@ -35,8 +41,8 @@ public sealed class Width10 : IWidth
 	public static int Width => _Width;
 	public static ulong LastRowMask => (1ul << _Width) - 1;
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
-	
 	public static int EmptyBitCount => 64 - _Width;
+	public static int Size => 1;
 }
 
 public sealed class Width11 : IWidth
@@ -45,8 +51,8 @@ public sealed class Width11 : IWidth
 	public static int Width => _Width;
 	public static ulong LastRowMask => (1ul << _Width) - 1;
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
-	
 	public static int EmptyBitCount => 64 - _Width;
+	public static int Size => 1;
 }
 
 
@@ -56,8 +62,8 @@ public sealed class Width12 : IWidth
 	public static int Width => _Width;
 	public static ulong LastRowMask => (1ul << _Width) - 1;
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
-	
 	public static int EmptyBitCount => 64 - _Width;
+	public static int Size => 1;
 }
 
 public sealed class Width16 : IWidth
@@ -68,6 +74,8 @@ public sealed class Width16 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width20 : IWidth
@@ -78,6 +86,8 @@ public sealed class Width20 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width24 : IWidth
@@ -88,6 +98,8 @@ public sealed class Width24 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width28 : IWidth
@@ -98,6 +110,8 @@ public sealed class Width28 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width30 : IWidth
@@ -108,6 +122,8 @@ public sealed class Width30 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width32 : IWidth
@@ -118,6 +134,8 @@ public sealed class Width32 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width35 : IWidth
@@ -128,6 +146,8 @@ public sealed class Width35 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount  { get; } = 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public sealed class Width40 : IWidth
@@ -138,6 +158,8 @@ public sealed class Width40 : IWidth
 	public static ulong EmptyBitMask { get; } = ulong.MaxValue << _Width;
 	
 	public static int EmptyBitCount => 64 - _Width;
+	
+	public static int Size => 1;
 }
 
 public class Width64 : IWidth
@@ -146,6 +168,8 @@ public class Width64 : IWidth
 	public static ulong LastRowMask => ulong.MaxValue;
 	public static int EmptyBitCount => 0;
 	public static ulong EmptyBitMask => 0;
+	
+	public static int Size => 1;
 }
 
 public class Width128 : IWidth
@@ -154,4 +178,6 @@ public class Width128 : IWidth
 	public static ulong LastRowMask => ulong.MaxValue;
 	public static int EmptyBitCount => 0;
 	public static ulong EmptyBitMask => 0;
+	
+	public static int Size => 2;
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DataStructures.Tiling;
@@ -87,17 +88,52 @@ public static class TileUtils
 		return tileArray;
 	}
 	
-	public static IEnumerable<Int2>[] GetAllRotationsNormalized(this IEnumerable<Int2> tile)
+	/// <summary>
+	/// Gets all symmetries of a tile that is distinct from the given tile. 
+	/// </summary>
+	public static IEnumerable<Int2>[] GetDistinctSymmetriesNormalized(this IEnumerable<Int2> tile)
 	{
 		var tileArray = new[]
 		{
 			tile.Normalize(), 
-			tile.Rotate180().Normalize(),
+			tile.ReflectX().Normalize(),
+			tile.Rotate180().Normalize(), 
+			tile.ReflectXRotate180().Normalize(),
+				
 			tile.Rotate90().Normalize(),
 			tile.Rotate270().Normalize(),
+			tile.ReflectXRotate90().Normalize(),
+			tile.ReflectXRotate270().Normalize()
 		};
 
-		return tileArray;
+		var neededOrientations = new List<IEnumerable<Int2>>()
+		{
+			tileArray[0]
+		};
+		
+		neededOrientations.AddRange(tileArray.Skip(1).Where(tile2 => !tile2.IsSame(tileArray[0])));
+
+		return neededOrientations.ToArray();
+	}
+
+	private static bool IsSame(this IEnumerable<Int2> tile1, IEnumerable<Int2> tile2)
+	{
+		if (tile1.Count() != tile2.Count())
+		{
+			return false;
+		}
+		
+		tile1.AssertIsDistinct();
+		tile2.AssertIsDistinct();
+
+		return tile1.All(tile2.Contains);
+	}
+	
+	[Conditional(GLDebug.UseAsserts)]
+	private static void AssertIsDistinct(this IEnumerable<Int2> list)
+	{
+		var tile1Distinct = list.Distinct();
+		GLDebug.Assert(tile1Distinct.Count() == list.Count());
 	}
 	
 	public static bool HasPattern(PagedTiler.Context context, PagedTiler.StripEnd stripEnd, Pattern pattern)

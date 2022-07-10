@@ -45,8 +45,18 @@ public readonly struct Ulong2<TWidth> : IEquatable<Ulong2<TWidth>>
 	public static readonly Ulong2<TWidth> One = new(1, 0);
 
 	public const int Size = 2;
+	
 	private const ulong FullRow = ulong.MaxValue;
 	private readonly ulong value0, value1;
+	
+	//TODO Not all operators will work with this constructor
+	private Ulong2(ulong value)
+	{
+		GLDebug.Assert(TWidth.Width is > 0 and <= 64);
+
+		value0 = value;
+		value1 = 0;
+	}
 
 	public Ulong2(params ulong[] value)
 	{
@@ -108,6 +118,7 @@ public readonly struct Ulong2<TWidth> : IEquatable<Ulong2<TWidth>>
 	public int LeastSignificantZero() => (~this).LeastSignificantBit();
 
 	//Consider putting this in an array
+	//Need one value for each width
 
 	public static Ulong2<TWidth> GetZero() => new();
 

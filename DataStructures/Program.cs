@@ -215,7 +215,7 @@ namespace DataStructures
 		}
 		
 		
-		public static void TestUlongTiler2()
+		public static void TestUlong2Tiler()
 		{
 			string tileName = ".***/*******";
 			
@@ -233,7 +233,9 @@ namespace DataStructures
 		[SupportedOSPlatform("windows")]
 		public static void Main(string[] args)
 		{
-			TileImage.Program.Main1(args);
+			//TileImage.Program.Main1(args);
+			
+			TestUlongTiler();
 
 			//TestTiling<ListTile, ImmutableStripEnd>();
 			//Console.WriteLine("Took: " + Measure(TestTiling)/1000.0f);

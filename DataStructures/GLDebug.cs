@@ -5,7 +5,7 @@ namespace DataStructures;
 
 public static class GLDebug
 {
-	private const string UseAsserts = "USE_ASSERTS";
+	internal const string UseAsserts = "USE_ASSERTS";
 	
 	[Conditional(UseAsserts)]
 	public static void Assert(bool condition) => Debug.Assert(condition);
