@@ -19,7 +19,7 @@ public static class TileUtils
 	private static readonly IComparer<Int2> PointComparer = new LeftMostInLowestRowComparer();
 	
 	
-	public static IEnumerable<Int2> NameToPoints(string cellsStr)
+	public static IEnumerable<Int2> NameToPoints(this string cellsStr)
 	{
 		string[] rows = cellsStr.Split("/");
 		rows = rows.ToArray();
@@ -39,6 +39,59 @@ public static class TileUtils
 		}
 
 		return tile;
+	}
+
+	/// <summary>
+	/// Converts a polyomino written in Dahlke notation (see https://github.com/eklhad/trec) to starts and periods notation.
+	/// </summary>
+	public static string DahlkeToName(string dahlkeStr)
+	{
+		ArgumentException ArgumentException() => new ArgumentException(null, nameof(dahlkeStr));
+		
+		string PairToName((string first, string rest) pair) 
+			=> DahlkeToName(pair.first) + "/" + DahlkeToName(pair.rest);
+	
+		string HexToName(string hex)
+		{ 
+			string binaryPresentation = Convert.ToString(Convert.ToInt32(hex, 16), 2).PadLeft(hex.Length * 4, '0');
+			int indexOfLast1 = binaryPresentation.LastIndexOf("1", StringComparison.Ordinal);
+			Console.WriteLine(indexOfLast1);
+	 
+			if(indexOfLast1 != -1)
+			{
+				binaryPresentation = binaryPresentation[..(indexOfLast1 + 1)];
+			}
+	 
+			return binaryPresentation
+				.Replace("0", ".")
+				.Replace("1", "*");
+		}
+		
+		
+		(string firstToken, string rest) Split(string str)
+		{
+			//Assume we have two tokens
+	
+			return str[2] switch
+			{
+				'+' => (str[0..3], str[3..]),
+				'{' when str[5] != '}' => throw ArgumentException(),
+				'{' => (str[0..2] + str[3..5], str[6..]),
+				_ => (str[0..2], str[2..])
+			};
+		}
+	
+		int length = dahlkeStr.Length;
+	
+		return length switch
+		{
+			2 => HexToName(dahlkeStr),
+			3 when dahlkeStr[2] != '+' => throw ArgumentException(),
+			3 => HexToName(dahlkeStr[0..2] + "8"),
+			6 when dahlkeStr[2] == '{' && dahlkeStr[5] != '}' => throw ArgumentException(),
+			6 when dahlkeStr[2] == '{' => HexToName(dahlkeStr[0..2] + dahlkeStr[3..5]),
+			_ => PairToName(Split(dahlkeStr))
+		};
 	}
 
 	public static IEnumerable<Int2> Rotate90(this IEnumerable<Int2> points) => points.Select(p => p.Rotate90());

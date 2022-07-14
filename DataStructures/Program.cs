@@ -224,7 +224,7 @@ namespace DataStructures
 				.GetAllSymmetriesNormalized()
 				.Select(points => points.ToUlongTile())
 				.ToArray();
-			
+
 			var res = Tiler<Width35, DefaultLongTile<Width35>>.TileRect(tiles);
 
 			Console.WriteLine(res ? "Found a tiling!" : "No tiling found");

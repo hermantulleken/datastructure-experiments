@@ -117,7 +117,7 @@ public static class Svg
 		return EdgeSoupToPaths(edges);
 	}
 	
-	private static List<(Int2, Int2)> PolyominoToEdgeSoup(List<Int2> polyomino) 
+	private static IEnumerable<(Int2, Int2)> PolyominoToEdgeSoup(List<Int2> polyomino) 
 	{
 		var edges = new List<(Int2, Int2)>();
 		
@@ -144,7 +144,7 @@ public static class Svg
 		return edges;
 	}
         
-	private static List<List<Int2>> EdgeSoupToPaths(List<(Int2, Int2)> edges)
+	private static List<List<Int2>> EdgeSoupToPaths(IEnumerable<(Int2, Int2)> edges)
 	{
 		var edgeList = edges.ToList();
 
@@ -159,17 +159,20 @@ public static class Svg
 			{
 				foreach (var nextEdge in edgeList)
 				{
-					if (nextEdge.Item1 == end) 
+					void AddToPath(Int2 node)
 					{
-						end = nextEdge.Item2;
+						end = node;
 						path.Add(end);
 						pathEdges.Add(nextEdge);
+					}
+					
+					if (nextEdge.Item1 == end) 
+					{
+						AddToPath(nextEdge.Item1);
 					} 
 					else if (nextEdge.Item2 == end) 
 					{
-						end = nextEdge.Item1;
-						path.Add(end);
-						pathEdges.Add(nextEdge);
+						AddToPath(nextEdge.Item2);
 					}
 				}
 			}
@@ -195,7 +198,7 @@ public static class Svg
 		return paths;
 	}
 
-	private static List<Int2> SimplifyPath(List<Int2> path)
+	private static List<Int2> SimplifyPath(IReadOnlyList<Int2> path)
 	{
 		var corners = new List<Int2>();
 		

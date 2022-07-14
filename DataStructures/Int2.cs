@@ -14,7 +14,7 @@ public readonly struct Int2 : IEquatable<Int2>
 	public static readonly Int2 Right = new(1, 0);
 	public static readonly Int2 Down = new(0, -1);
 	public static readonly Int2 Left = new(-1, 0);
-	public static Int2 NegOne = new(-1, -1);
+	public static Int2 NegOnes = new(-1, -1);
 
 	public Int2 LeftNeighbor => this - Right;
 	public Int2 RightNeighbor => this + Right;
@@ -33,7 +33,6 @@ public readonly struct Int2 : IEquatable<Int2>
 	public static Int2 operator-(Int2 point1) => new(-point1.X, -point1.Y);
 	public static Int2 operator*(int factor, Int2 point) => new(factor * point.X, factor * point.Y);
 	public static Int2 operator*(Int2 point, int factor) => new(factor * point.X, factor * point.Y);
-		
 	public static Vector2 operator*(float factor, Int2 point) => new(factor * point.X, factor * point.Y);
 	public static Vector2 operator*(Int2 point, float factor) => new(factor * point.X, factor * point.Y);
 	public static Int2 operator/(Int2 point, int divisor) => new(point.X / divisor, point.Y / divisor);
@@ -52,22 +51,14 @@ public readonly struct Int2 : IEquatable<Int2>
 		return objectToCompareWith.X == X && objectToCompareWith.Y == Y;
 
 	}
-		
+	
 	public static bool operator ==(Int2 point1, Int2 point2) => point1.Equals(point2);
-
 	public static bool operator !=(Int2 point1, Int2 point2) => !point1.Equals(point2);
-
-
 	public static implicit operator Vector2(Int2 point) => new(point.X, point.Y);
-		
-
 	public override string ToString() => $"({X}, {Y})";
-
 	public override int GetHashCode() => HashCode.Combine(X.GetHashCode(), Y.GetHashCode());
-
 	public static implicit operator Int2((int x, int y) point) => new (point.x, point.y);
 	public static implicit operator (int x, int y)(Int2 point) => new (point.X, point.Y);
-
 	public Int2 Rotate90() => new Int2(-Y, X);
 	public Int2 Rotate180() => new Int2(-X, -Y);
 	public Int2 Rotate270() => new Int2(Y, -X);

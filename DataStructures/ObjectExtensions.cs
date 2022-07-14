@@ -72,6 +72,7 @@ public static class DebugEnumerableExtensions
 	private static string ItemToString<T>(T item) => 
 		item switch 
 		{
+			string str => str,
 			IEnumerable enumerable => ToPrettyString(enumerable.Cast<object>()),
 			_ => item.ToString()
 		};
