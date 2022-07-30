@@ -39,15 +39,9 @@ namespace DataStructures
 	
 	public static class SimpleListExtensions
 	{
-		public static int Count<T>(this ISimpleList<T> list)
-		{
-			return list.IsEmpty ? 0 : 1 + list.Pop().Count();
-		}
+		public static int Count<T>(this ISimpleList<T> list) => list.IsEmpty ? 0 : 1 + list.Pop().Count();
 
-		public static ISimpleList<T> Pop<T>(this ISimpleList<T> list)
-		{
-			return list.Pop(out _);
-		}
+		public static ISimpleList<T> Pop<T>(this ISimpleList<T> list) => list.Pop(out _);
 
 		/// <summary>
 		/// Push items from a <see cref="IEnumerable"/> one by one to a list. 
