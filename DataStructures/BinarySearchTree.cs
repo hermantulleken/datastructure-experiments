@@ -6,7 +6,6 @@ using System.Linq;
 using Gamelogic.Extensions;
 using JetBrains.Annotations;
 
-
 namespace DataStructures
 {
 	// This tree does not support elements with the same key, and since it
@@ -990,20 +989,22 @@ namespace DataStructures
 		}
 	}
 
-	public class Bag<T> : IEnumerable<T>
+	//Bag seems to be a misnomer for this class; however, this is from some book.
+	public class Bag2<T> : IEnumerable<T>
 	{
 		private readonly DoublyLinkedList<T> list;
 
 		public int Count => list.Count;
 		public bool Empty => list.Empty;
 
-		public Bag() => list = new DoublyLinkedList<T>();
+		public Bag2() => list = new DoublyLinkedList<T>();
 		public void Add(T item) => list.AddLast(item);
 		public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 	
-	public sealed class RandomBag<T> : IEnumerable<T>
+	//Bag seems to be a misnomer for this class; however, this is from some book.
+	public sealed class RandomBag2<T> : IEnumerable<T>
 	{
 		private readonly ResizeableArray<T> list;
 		private readonly RandomIterator<T> iterator;
@@ -1011,7 +1012,7 @@ namespace DataStructures
 		public int Count => list.Count;
 		public bool Empty => list.Empty;
 
-		public RandomBag()
+		public RandomBag2()
 		{
 			list = new ResizeableArray<T>();
 			iterator = new RandomIterator<T>(list);

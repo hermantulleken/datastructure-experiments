@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -262,6 +263,20 @@ namespace DataStructures
 			//ProfileStringBuilding();
 
 			//Console.ReadKey();
+
+			var d = BindingDirection.OneWay;
+
+			switch (d)
+			{
+				case BindingDirection.OneWay:
+					Console.Write("a");
+					break;
+				case BindingDirection.TwoWay:
+					Console.Write("b");
+					break;
+				default:
+					throw new InvalidEnumArgumentException(nameof(d), (int) d, d.GetType());
+			}
 		}
 
 		private static void TestInker()
@@ -482,7 +497,7 @@ namespace DataStructures
 
 		private static void TestRandomBag()
 		{
-			var bag = new RandomBag<int>
+			var bag = new RandomBag2<int>
 			{
 				0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 			};
