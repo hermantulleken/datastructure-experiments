@@ -8,6 +8,8 @@ public class DynamicGrid
 {
 	//Prefer odd so the center is in the middle, prefer one more than power of two (compare with CalculateNewSize below)
 	protected static readonly Int2 DefaultSize = 17 * Int2.One; 
+	
+	protected DynamicGrid(){}
 }
 
 /// <summary>

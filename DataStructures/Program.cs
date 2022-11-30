@@ -8,7 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 using Gamelogic.Extensions;
 using Gamelogic.Extensions.Algorithms;
 using DataStructures.Tiling;
@@ -232,7 +231,7 @@ namespace DataStructures
 		}
 		
 		[SupportedOSPlatform("windows")]
-		public static void Main(string[] args)
+		public static void Main1(string[] args)
 		{
 			//TileImage.Program.Main1(args);
 			

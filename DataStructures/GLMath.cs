@@ -8,4 +8,6 @@ public class GLMath
 	public static int RoundDiv(int m, int n) => (m + n / 2) / n;
 
 	public static Int2 RoundDiv(Int2 m, int n) => new Int2(RoundDiv(m.X, n), RoundDiv(m.Y, n));
+
+	public static int Mod(int m, int n) => m >= 0 ? m % n : (m % n) + n;
 }

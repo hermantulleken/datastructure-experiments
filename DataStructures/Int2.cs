@@ -66,4 +66,6 @@ public readonly struct Int2 : IEquatable<Int2>
 	public Int2 ReflectXRotate90() => new Int2(-Y, -X);
 	public Int2 ReflectXRotate180() => new Int2(X, -Y);
 	public Int2 ReflectXRotate270() => new Int2(Y, X);
+
+	public Int2 ReflectXY() => new Int2(Y, X);
 }
