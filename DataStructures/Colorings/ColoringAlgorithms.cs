@@ -76,7 +76,7 @@ public class ColoringAlgorithms
 
 	private static bool IsMultipleOf(Int2 point1, Int2 point2)
 	{
-		
+		throw new NotImplementedException();
 	}
 
 	private static bool IsMultipleOfNonZero(Int2 point1, Int2 point2)

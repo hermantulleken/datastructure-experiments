@@ -5,7 +5,7 @@ namespace DataStructures.Colorings;
 
 public static class Program
 {
-	public static void Main()
+	public static void Main_()
 	{
 		var coloring = new ColoringAlgorithms.FlagColoring
 		{
