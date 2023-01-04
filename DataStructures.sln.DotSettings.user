@@ -1,68 +1,17 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=43b20ee4_002D990d_002D44fa_002Da9da_002Db94d980dcf78/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestMathWhiteBox" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestPagedTiler.TestMathWhiteBox&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestPagedTiler.TestPlace&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongStripEnd&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=92cd16c9_002Dd774_002D4609_002Db0d0_002D526e4812c1ef/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.ArrayPermutationTests&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;Project Location="C:\Work\Repos\datastructure-experiments\Tests" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
+    &lt;Namespace&gt;Tests&lt;/Namespace&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4ad25a87_002D7c00_002D4819_002D86fd_002D3b4a68a0f16e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestReflection1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestPagedTiler.TestReflection1&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6e0b86ed_002Dd489_002D4073_002Dacbc_002Db3c12df88788/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestPlace" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongStripEnd.TestPlace&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9ade13ff_002D1e49_002D4f13_002D9105_002Df26217c0f20b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestNullThrows" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Work\Repos\datastructure-experiments\Tests" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac6c1590_002D3f0a_002D4816_002Db9ee_002D95300a5737ef/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.SimpleListTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestTuple&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.EnumerableExtensionsTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.MultiRadixTuples&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestThrowIfZeroRadix1&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.CombinatorialTests.TestThrowIfZeroRadix2&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.BinaryTreeTests.AddContainsInvariant&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwap&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwapObject&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwapAt&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestAlgorithms.TestSwapInt&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort.TestIsSortedOnSortedList&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort.TestIsSortedOnUnsortedList&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net5.0::Tests.TestSort&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestIndexesInRange&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestIndexesInSequence&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringLeaf&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringInternal&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestStructureStringLevels&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.PotQuadTreeTests.TestReconnect&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort.TestIsSortedOnSortedList&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort.TestIsSortedOnUnsortedList&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestMergeSort.TestNullThrows&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongTile.TestTile&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongTile.TestMultipleCellsPerRow&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongTile&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestULongOps.TestFindZeroPosition&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestULongOps.TestInRange&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongStripEnd.TestPlace&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestPagedTiler.TestPlace&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestUlongStripEnd&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestPagedTiler.TestMathWhiteBox&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestPagedTiler&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestTileUtils&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestBigFixedFullUlong&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestUlong2&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ece282b7_002Dca6f_002D429e_002D9a60_002D3942c788342c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestBigFixedFullUlong" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.Tiling.TestBigFixedFullUlong&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::C0F3156A-1E59-4480-AE3F-3B59113C78CF::net6.0::Tests.TestUlong2.TestNewConstruction&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Steque/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
