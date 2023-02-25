@@ -30,9 +30,9 @@ public interface IPermutation : IBijection<int, int>
 	public IPermutation Compose(IPermutation other);
 	
 	/// <summary>
-	/// Returns true of two permutations are equal. 
+	/// Returns true of two permutations are equivalent. 
 	/// </summary>
-	/// <remarks>Permutations are equal if they are defined on the same sets (i.e. their values of <see cref="SetCount"/> are equal),
+	/// <remarks>Permutations are equivalent if they are defined on the same sets (i.e. their values of <see cref="SetCount"/> are equal),
 	/// and they map each element of the set to the same value.</remarks>
-	public bool Equals(IPermutation other);
+	public bool Equivalent(IPermutation other);
 }

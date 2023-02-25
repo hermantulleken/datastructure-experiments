@@ -35,11 +35,11 @@ public class ArrayPermutationTests
 		var permutation3 = ArrayPermutation.FromPermutationMap(2, 1, 0);
 		var permutation4 = ArrayPermutation.FromPermutationMap(3, 1, 2, 0);
 		
-		Assert.That(permutation.Equals(permutation1));
-		Assert.That(!permutation.Equals(permutation2));
-		Assert.That(!permutation.Equals(permutation3));
-		Assert.That(!permutation.Equals(permutation4));
-		Assert.That(!permutation.Equals(null));
+		Assert.That(permutation.Equivalent(permutation1));
+		Assert.That(!permutation.Equivalent(permutation2));
+		Assert.That(!permutation.Equivalent(permutation3));
+		Assert.That(!permutation.Equivalent(permutation4));
+		Assert.That(!permutation.Equivalent(null));
 	}
 
 	[Test]
@@ -58,7 +58,7 @@ public class ArrayPermutationTests
 		var result = permutation.Compose(inverse);
 		var identity = ArrayPermutation.Identity(permutation.SetCount);
 		
-		Assert.That(result.Equals(identity));
+		Assert.That(result.Equivalent(identity));
 	}
 
 	[Test]
@@ -86,7 +86,7 @@ public class ArrayPermutationTests
 	public void TestLexicographicalRankInvariant(ArrayPermutation permutation)
 	{
 		int rank = permutation.LexicographicalRank();
-		Assert.That(permutation.Equals(ArrayPermutation.FromLexicographicalRank(permutation.SetCount, rank)));
+		Assert.That(permutation.Equivalent(ArrayPermutation.FromLexicographicalRank(permutation.SetCount, rank)));
 	}
 
 	[Theory]
@@ -94,10 +94,10 @@ public class ArrayPermutationTests
 	{
 		var identity = ArrayPermutation.Identity(permutation.SetCount);
 		var permutation1 = permutation.Compose(identity);
-		Assert.That(permutation.Equals(permutation1));
+		Assert.That(permutation.Equivalent(permutation1));
 		
 		var permutation2 = identity.Compose(permutation);
-		Assert.That(permutation.Equals(permutation2));
+		Assert.That(permutation.Equivalent(permutation2));
 		
 	}
 
@@ -105,7 +105,7 @@ public class ArrayPermutationTests
 	public void TestInverseInvariant(ArrayPermutation permutation)
 	{
 		var permutation1 = permutation.Inverse().Inverse();
-		Assert.That(permutation.Equals(permutation1));
+		Assert.That(permutation.Equivalent(permutation1));
 	}
 	
 	[Test, Sequential]

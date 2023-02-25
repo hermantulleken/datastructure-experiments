@@ -185,9 +185,9 @@ public class ArrayPermutation : IPermutation
 	}
 
 	/// <inheritdoc />
-	public bool Equals(IPermutation other)
+	public bool Equivalent(IPermutation other)
 	{
-		if (other == null)
+		if (other == null || SetCount != other.SetCount)
 		{
 			return false;
 		}
@@ -197,11 +197,6 @@ public class ArrayPermutation : IPermutation
 			return true;
 		}
 
-		if (SetCount != other.SetCount)
-		{
-			return false;
-		}
-		
 		for (int element = 0; element < SetCount; element++)
 		{
 			if (this[element] != other[element])

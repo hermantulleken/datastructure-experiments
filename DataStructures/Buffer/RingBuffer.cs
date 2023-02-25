@@ -101,12 +101,13 @@ public sealed class ResizeableBuffer<T> : IBuffer<T>
 	
 	public void Resize(int newCapacity)
 	{
-		if (newCapacity < 0) throw new ArgumentOutOfRangeException(nameof(newCapacity), "Argument must be positive");
-
-		if (newCapacity == 0)
+		switch (newCapacity)
 		{
-			buffer = new ZeroCapacityBuffer<T>();
-			return;
+			case < 0:
+				throw new ArgumentOutOfRangeException(nameof(newCapacity), "Argument must be positive");
+			case 0:
+				buffer = new ZeroCapacityBuffer<T>();
+				return;
 		}
 
 		var newBuffer = new RingBuffer<T>(newCapacity);

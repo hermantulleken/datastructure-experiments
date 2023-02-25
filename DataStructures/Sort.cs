@@ -263,7 +263,7 @@ namespace DataStructures
 				(list[a], list[b]) = (list[b], list[a]);
 			}
 			
-			void SwapSmallestAfterIndexToIndex(int index)
+			void MoveSmallestAfterIndexToIndex(int index)
 			{
 				int indexOfSmallest = FindIndexOfMinimumAtOrAfter(index);
 				SwapAt(index, indexOfSmallest);
@@ -300,7 +300,7 @@ namespace DataStructures
 
 			for (int i = 0; i < list.Count - 1; i++)
 			{
-				SwapSmallestAfterIndexToIndex(i);
+				MoveSmallestAfterIndexToIndex(i);
 			}
 			
 			GLDebug.Assert(IsSorted(list, 0, list.Count));

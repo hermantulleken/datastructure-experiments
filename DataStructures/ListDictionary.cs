@@ -196,3 +196,127 @@ public class ListSet<T> : ISet<T>
 	
 	private bool Contains(IEnumerable<T> other, T item) => other.Any(x => Comparer.Equals(x, item));
 }
+
+public class ListDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+{
+	private List<TKey> keys = new();
+	private List<TValue> values = new();
+
+
+	public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => keys.Select((t, i) => new KeyValuePair<TKey, TValue>(t, values[i])).GetEnumerator();
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+	public void Add(KeyValuePair<TKey, TValue> item)
+	{
+		keys.Add(item.Key);
+		values.Add(item.Value);
+	}
+
+	public void Clear()
+	{
+		keys.Clear();
+		values.Clear();
+	}
+
+	public bool Contains(KeyValuePair<TKey, TValue> item)
+	{
+		int index = keys.IndexOf(item.Key);
+
+		return index != -1 && values[index].Equals(item.Value);
+	}
+
+	public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+	{
+		for (int i = arrayIndex; i < array.Length; i++)
+		{
+			keys.Add(array[i].Key);
+			values.Add(array[i].Value);
+		}
+	}
+
+	public bool Remove(KeyValuePair<TKey, TValue> item)
+	{
+		var (key, value) = item;
+		int index = keys.IndexOf(key);
+
+		if (values[index].Equals(value))
+		{
+			keys.RemoveAt(index);
+			values.RemoveAt(index);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public int Count => keys.Count;
+
+	public bool IsReadOnly => false;
+	public void Add(TKey key, TValue value)
+	{
+		keys.Add(key);
+		values.Add(value);
+	}
+
+	public bool ContainsKey(TKey key) => keys.Contains(key);
+
+	public bool Remove(TKey key)
+	{
+		int index = keys.IndexOf(key);
+
+		if (index == -1) return false;
+		
+		keys.RemoveAt(index);
+		values.RemoveAt(index);
+
+		return true;
+	}
+
+	public bool TryGetValue(TKey key, out TValue value)
+	{
+		int index = keys.IndexOf(key);
+
+		if (index == -1)
+		{
+			value = default;
+			return false;
+		}
+
+		value = values[index];
+		return true;
+	}
+
+	public TValue this[TKey key]
+	{
+		get
+		{
+			int index = keys.IndexOf(key);
+
+			if (index == -1)
+			{
+				throw new IndexOutOfRangeException();
+			}
+
+			return values[index];
+		}
+
+		set
+		{
+			int index = keys.IndexOf(key);
+
+			if (index == -1)
+			{
+				Add(key, value);
+			}
+			else
+			{
+				values[index] = value;
+			}
+		}
+	}
+
+	public ICollection<TKey> Keys => keys;
+	public ICollection<TValue> Values => values;
+}
